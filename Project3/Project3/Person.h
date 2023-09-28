@@ -12,6 +12,10 @@ public:
 		, m_age(age)
 	{}
 
+	std::string getName() const;
+
+	void setAge(int age);
+
 	friend std::ostream& operator<<(std::ostream& os, const Person& p) {
 		return os << p.m_name << " ist " << p.m_age << " Jahre alt.";
 	}

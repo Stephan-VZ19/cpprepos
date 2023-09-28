@@ -9,7 +9,7 @@ int main() {
 	Point p2{ 1, 2};
 	Point p3{ 3, 4};
 
-	Person peter{ "Peter", 25 };
+	const Person peter{ "Peter", 25 };
 	Person susi{ "Susi", 22 };
 
 	std::cout << p0 << std::endl;
@@ -19,5 +19,11 @@ int main() {
 
 	std::cout << peter << std::endl;
 	std::cout << susi << std::endl;
+
+	std::cout << p2.dist(p3) << std::endl;
+
+	decltype(susi) hans("Hans", 24);
+
+	auto car = hans;
 
 }
