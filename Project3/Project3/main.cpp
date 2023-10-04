@@ -26,4 +26,6 @@ int main() {
 
 	auto car = hans;
 
+	std::cout << car << std::endl;
+
 }
