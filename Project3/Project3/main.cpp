@@ -3,29 +3,11 @@
 
 #include <iostream>
 
+int Person::getAge() const { return m_age; }
+
 int main() {
 	Point p0;
-	Point p1(1);
-	Point p2{ 1, 2};
-	Point p3{ 3, 4};
-
-	const Person peter{ "Peter", 25 };
-	Person susi{ "Susi", 22 };
-
-	std::cout << p0 << std::endl;
-	std::cout << p1 << std::endl;
-	std::cout << p2 << std::endl;
-	std::cout << p3 << std::endl;
-
-	std::cout << peter << std::endl;
-	std::cout << susi << std::endl;
-
-	std::cout << p2.dist(p3) << std::endl;
-
-	decltype(susi) hans("Hans", 24);
-
-	auto car = hans;
-
-	std::cout << car << std::endl;
+	Point p1(3);
+	Point p2(5, 6);
 
 }
