@@ -6,19 +6,14 @@
 
 int Person::getAge() const { return m_age; }
 
+void foo(const Point& pIn, Point& pOut) {
+	pOut = pIn;	// output,input -> zwei Variablen zurückgeben
+}
+
 int main() {
-	Point p0;
-	Point p1(3);
-	Point p2(5, 6);
+	std::unique_ptr<Person> up = std::make_unique<Person>("Berta", 20);
 
-	Point& rp1 = p1;
-	assert(&rp1 == &p1);
+	up->setAge(19);
 
-	Point& rp11 = rp1;
-
-	rp1 = p2;
-
-
-
-	std::cout << p1 << std::endl;
+	std::cout << *up << std::endl;
 }
