@@ -16,4 +16,14 @@ void foo(const Point& pIn, Point& pOut) {
 int main() {
 	PointArray pa1;
 	PointArray pa2(10);
+	Person person[] {Person("Peter", 20), Person("Moni", 21)};
+
+	pa1.pushBack({ 3, 5 });
+	pa1.pushBack({ 7, 5 });
+
+	std::cout << pa1 << std::endl;
+	std::cout << pa2 << std::endl;
+
+	
+
 }
