@@ -16,24 +16,17 @@ void foo(const Point& pIn, Point& pOut) {
 }
 
 int main() {
-	PointArray pa1;
-	PointArray pa2(10);
-	Person person[] {Person("Peter", 20), Person("Moni", 21)};
+	const char* s = "hallo";
+	char t[] = "hallo";
+	std::string_view sv("hello");
+	std::cout << sizeof(sv) << std::endl;
 
-	std::array<Point, 3> a1{ Point(1,1), Point(2,3), Point(3,4)};
-	std::vector<Person> v1{ Person("Peter", 20), Person("Moni", 21) };
+	std::string s1 = "abcdef";
+	s1[0] = 'A';
+	std::cout << s1 << std::endl;
 
-	auto x = a1[1];		// Kopie
-	// assert(&x != a1[1]);
+	std::cout << sizeof(s) << ", " << s << std::endl;	// 8, hallo
+	std::cout << sizeof(t) << ", " << t << std::endl;	// 6, hallo
 
-	pa1.pushBack({ 3, 5 });
-	pa1.pushBack({ 7, 5 });
-
-	std::cout << pa1 << std::endl;
-	std::cout << pa2 << std::endl;
-
-
-
-	
 
 }
