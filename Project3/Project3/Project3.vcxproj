@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Person.h" />
+    <ClInclude Include="PointArray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
