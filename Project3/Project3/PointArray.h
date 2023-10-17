@@ -41,7 +41,7 @@ public:
 				up[i] = m_data[i];
 			}
 
-			m_data = std::move(up);
+			m_data = std::move(up);		// move Beispiel <<<<<<<<<<<<<<<<================
 
 		}
 		m_data[m_size++] = p;
