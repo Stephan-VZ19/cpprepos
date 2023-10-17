@@ -1,8 +1,13 @@
 #include "Point.h"
 #include "Person.h"
 #include <cassert>
-
+#include <vector>
+#include <array>
 #include <iostream>
+#include <assert.h>
+#include "PointArray.h"
+#include <string_view>
+
 
 int Person::getAge() const { return m_age; }
 
@@ -11,19 +16,17 @@ void foo(const Point& pIn, Point& pOut) {
 }
 
 int main() {
-	std::shared_ptr<Person> up = std::make_shared<Person>("Berta", 20);
-	std::shared_ptr<Person> sp = std::make_shared<Person>("Paul", 22);
+	const char* s = "hallo";
+	char t[] = "hallo";
+	std::string_view sv("hello");
+	std::cout << sizeof(sv) << std::endl;
 
-	up->setAge(19);
+	std::string s1 = "abcdef";
+	s1[0] = 'A';
+	std::cout << s1 << std::endl;
 
-	std::cout << sp.use_count() << std::endl;
+	std::cout << sizeof(s) << ", " << s << std::endl;	// 8, hallo
+	std::cout << sizeof(t) << ", " << t << std::endl;	// 6, hallo
 
-	auto sp1 = sp;
 
-	std::cout << sp1.use_count() << std::endl;	// sp oder sp1 ist das gleiche
-
-	up->setAge(19);
-	sp->setAge(23);
-
-	std::cout << *up << std::endl;
 }
