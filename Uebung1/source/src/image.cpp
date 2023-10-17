@@ -37,6 +37,14 @@ void RGBImage::load(istream& in) {
     // Image data
     // ==========
     // TODO [Aufgabe] 1.a)
+    for (int i = 0; i < mSize; i++) {
+        int red, green, blue;
+        in >> red;
+        in >> green;
+        in >> blue;
+        mData[i] = RGBPixel(red, green, blue);
+    }
+    
     // TODO [Aufgabe] 1.b)
 }
 
