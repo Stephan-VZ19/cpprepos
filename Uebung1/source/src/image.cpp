@@ -42,6 +42,9 @@ void RGBImage::load(istream& in) {
         in >> red;
         in >> green;
         in >> blue;
+        if (!in.good()) {
+            throw std::runtime_error("error stream");
+        }
         mData[i] = RGBPixel(red, green, blue);
     }
     
