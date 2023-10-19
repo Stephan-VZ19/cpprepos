@@ -16,17 +16,15 @@ void foo(const Point& pIn, Point& pOut) {
 }
 
 int main() {
-	const char* s = "hallo";
-	char t[] = "hallo";
-	std::string_view sv("hello");
-	std::cout << sizeof(sv) << std::endl;
+	Point p1(1, -1, Color::yellow);
+	Point p2;
+	Point p3 = Point(1, 3);
+	Point p4{ 3, 0 };
+	Point* p5 = new Point(1, 2, Color::red);
+	auto up = std::make_unique<Point>();
 
-	std::string s1 = "abcdef";
-	s1[0] = 'A';
-	std::cout << s1 << std::endl;
-
-	std::cout << sizeof(s) << ", " << s << std::endl;	// 8, hallo
-	std::cout << sizeof(t) << ", " << t << std::endl;	// 6, hallo
-
-
+	std::cout << p1 << std::endl;
+	std::cout << p2 << std::endl;
+	std::cout << p3 << std::endl;
+	std::cout << p4 << std::endl;
 }
