@@ -11,22 +11,28 @@
 
 int Person::getAge() const { return m_age; }
 
-void foo(const Point& pIn, Point& pOut) {
+/* void foo(const Point& pIn, Point& pOut) {
 	pOut = pIn;	// output,input -> zwei Variablen zurückgeben
-}
+} */
 
 int main() {
-	const char* s = "hallo";
-	char t[] = "hallo";
-	std::string_view sv("hello");
-	std::cout << sizeof(sv) << std::endl;
+	std::cout << Point::getNumberOfInstances() << std::endl;
+	
+	Point p1(1, -1, Color::yellow);
+	Point p2();
+	Point p3 = Point(1, 3);
+	Point p4{ 3, 0 };
+	Point* p5 = new Point(1, 2, Color::red);
+	auto up = std::make_unique<Point>();
 
-	std::string s1 = "abcdef";
-	s1[0] = 'A';
-	std::cout << s1 << std::endl;
+	Point p6 = std::move(p1);
 
-	std::cout << sizeof(s) << ", " << s << std::endl;	// 8, hallo
-	std::cout << sizeof(t) << ", " << t << std::endl;	// 6, hallo
+	p4.move(1, 1).move(2, 2).move(3, 3);
 
+	std::cout << Point::getNumberOfInstances() << std::endl;
 
+	std::cout << p1 << std::endl;
+	std::cout << p2 << std::endl;
+	std::cout << p3 << std::endl;
+	std::cout << p4 << std::endl;
 }

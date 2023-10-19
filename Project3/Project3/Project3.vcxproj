@@ -130,12 +130,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="Point.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Project3.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="PointArray.h" />
   </ItemGroup>
