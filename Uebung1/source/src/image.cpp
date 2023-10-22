@@ -37,18 +37,58 @@ void RGBImage::load(istream& in) {
     // Image data
     // ==========
     // TODO [Aufgabe] 1.a)
-    for (int i = 0; i < mSize; i++) {
-        int red, green, blue;
-        in >> red;
-        in >> green;
-        in >> blue;
-        if (!in.good()) {
-            throw std::runtime_error("error stream");
+    if (magic == "P3") {
+        for (int i = 0; i < mSize; i++) {
+            int red, green, blue;
+            in >> red;
+            in >> green;
+            in >> blue;
+            if (!in.good()) {
+                throw std::runtime_error("error stream");
+            }
+            mData[i] = RGBPixel(red, green, blue);
         }
-        mData[i] = RGBPixel(red, green, blue);
+    }
+
+    // TODO [Aufgabe] 1.b)
+    else if (magic == "P6") {
+        //for (int i = 0; i < mSize; i++) {
+        //    int red, green, blue;
+        //    char pixels[]{ 9 * mSize };     // mSize times pixels and 9 chars for each
+        //    in.read(pixels, 9 * mSize);
+        //    for (int j = i * 9; j < 9; j++) {
+        //        if (j < 3) {
+        //            char pixR[]{ 3 };
+        //            pixR[j] = pixels[j];
+        //            red = stoi(pixR);
+        //        }
+        //        else if (j < 6) {
+        //            char pixG[]{ 3 };
+        //            pixG[j-3] = pixels[j];
+        //            green = stoi(pixG);
+        //        }
+        //        else {
+        //            char pixB[]{ 3 };
+        //            pixB[j-6] = pixels[j];
+        //            blue = stoi(pixB);
+        //        }
+        //        if (!in.good()) {
+        //            throw std::runtime_error("error stream");
+        //        }
+        //    }
+        //    if (!in.good()) {
+        //        throw std::runtime_error("error stream");
+        //    }
+        //    mData[i] = RGBPixel(red, green, blue);
+        //}
+    }
+
+    else
+    {
+        throw std::runtime_error("error magic number");
     }
     
-    // TODO [Aufgabe] 1.b)
+    
 }
 
 void RGBImage::write(ostream& out) const {
