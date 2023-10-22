@@ -105,6 +105,12 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
+    float bn = 0.0;
+    for (int i = 0; i < 3; i++) {
+
+    }
+
+
     return 0.0;
 }
 
