@@ -105,13 +105,8 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
-    float bn = 0.0;
-    for (int i = 0; i < 3; i++) {
-
-    }
-
-
-    return 0.0;
+    auto mean = ( ((red / 255) * 100) + ((green / 255) * 100) + ((blue / 255)) * 100) / 3.0;
+    return mean;
 }
 
 Coordinate RGBImage::findBrightestPixel() const {
