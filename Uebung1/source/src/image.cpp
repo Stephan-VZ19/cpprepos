@@ -51,36 +51,21 @@ void RGBImage::load(istream& in) {
     }
 
     // TODO [Aufgabe] 1.b)
-    else if (magic == "P6") {
-        //for (int i = 0; i < mSize; i++) {
-        //    int red, green, blue;
-        //    char pixels[]{ 9 * mSize };     // mSize times pixels and 9 chars for each
-        //    in.read(pixels, 9 * mSize);
-        //    for (int j = i * 9; j < 9; j++) {
-        //        if (j < 3) {
-        //            char pixR[]{ 3 };
-        //            pixR[j] = pixels[j];
-        //            red = stoi(pixR);
-        //        }
-        //        else if (j < 6) {
-        //            char pixG[]{ 3 };
-        //            pixG[j-3] = pixels[j];
-        //            green = stoi(pixG);
-        //        }
-        //        else {
-        //            char pixB[]{ 3 };
-        //            pixB[j-6] = pixels[j];
-        //            blue = stoi(pixB);
-        //        }
-        //        if (!in.good()) {
-        //            throw std::runtime_error("error stream");
-        //        }
-        //    }
-        //    if (!in.good()) {
-        //        throw std::runtime_error("error stream");
-        //    }
-        //    mData[i] = RGBPixel(red, green, blue);
-        //}
+    else if (magic == "P6") {       
+        size_t startPosition = in.tellg();
+        const size_t bytesToGo = filesize - startPosition;
+
+        char readChars[bytesToGo]{};
+
+        in.read(readChars, bytesToGo);
+
+        for (int i = 0; i < bytesToGo; i++) {
+            int counter = 3;
+            int red, green, blue;
+            if (readChars[i] != ' ' && readChars[i] != '\"' && counter > 0) {
+
+            }
+        }
     }
 
     else
@@ -105,7 +90,7 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
-    return (((red + green + blue) / 255 ) / 3) + 1.0;
+    return ((red / 255.0 + green / 255.0 + blue / 255.0) / 3);
 }
 
 Coordinate RGBImage::findBrightestPixel() const {
