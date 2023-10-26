@@ -52,20 +52,11 @@ void RGBImage::load(istream& in) {
 
     // TODO [Aufgabe] 1.b)
     else if (magic == "P6") {       
-        size_t startPosition = in.tellg();
-        const size_t bytesToGo = filesize - startPosition;
 
-        char readChars[bytesToGo]{};
+        const size_t readCharsSize = mSize * sizeof(RGBPixel);
 
-        in.read(readChars, bytesToGo);
+        in.read((char*)(mData.get()), readCharsSize);
 
-        for (int i = 0; i < bytesToGo; i++) {
-            int counter = 3;
-            int red, green, blue;
-            if (readChars[i] != ' ' && readChars[i] != '\"' && counter > 0) {
-
-            }
-        }
     }
 
     else
@@ -90,7 +81,7 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
-    return ((red / 255.0 + green / 255.0 + blue / 255.0) / 3);
+    return ((red + green + blue) / 255.0) / 3);  // zuerst int addieren, erst nachher double divid.
 }
 
 Coordinate RGBImage::findBrightestPixel() const {
