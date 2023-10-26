@@ -81,7 +81,7 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
-    return ((red + green + blue) / 255.0) / 3);  // zuerst int addieren, erst nachher double divid.
+    return (((red + green + blue) * 3) / 255.0);  // zuerst int addieren, erst nachher double divid. -> nur einmal dividieren!
 }
 
 Coordinate RGBImage::findBrightestPixel() const {
