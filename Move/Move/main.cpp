@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "image.h"
 
 using namespace std;
 
@@ -20,17 +21,13 @@ void test(int&& x) {
 
 
 int main() {
-	vector<int> v1{ 1, 2, 3, 4 };
-	print(v1);
-	print({ 1, 2, 3 });		// in/out object
+	RGBImage rgb0;
+	RGBImage rgb0 = RGBImage(3, 4);
 
-	int x = 5, y = 3;
-	int* ptr = &y;
-	test(x);	// l value
-	test(5);	// r value
-	test(x + 5);	// r value
-	test(*ptr);		// l value
-
-	test(std::move(x));
+	const uint8_t data[] = {
+		255, 0, 0,
+		0, 255, 0,
+		0, 0, 255
+	};
 
 }
