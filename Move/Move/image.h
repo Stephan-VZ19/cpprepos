@@ -33,4 +33,20 @@ public:
 	{
 		std::cout << "move" << std::endl;
 	}
+
+	RGBImage(const RGBImage& img)
+		: RGBImage(img.m_width, img.m_height)
+	{
+		std::copy(data, data + m_size, m_data.get());
+		std::cout << "copy" << std::endl;
+	}
+
+	RGBImage(RGBImage&& img)
+		: m_size(std::exchange(img.m_size, 0))
+		, m_width(std::exchange(img.m_width, 0))
+		, m_height(std::exchange(img.m_height, 0))
+		, m_data(std::exchange(img.m_data, nullptr))
+	{
+		std::cout << "move" << std::endl;
+	}
 };

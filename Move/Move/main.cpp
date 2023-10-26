@@ -34,4 +34,6 @@ int main() {
 	auto up = std::make_unique<uint8_t[]>(3000);
 	RGBImage img4(std::move(up), 100, 10);
 
+	RGBImage img5(std::move(img3));
+
 }
