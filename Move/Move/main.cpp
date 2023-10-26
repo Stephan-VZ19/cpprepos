@@ -22,12 +22,16 @@ void test(int&& x) {
 
 int main() {
 	RGBImage rgb0;
-	RGBImage rgb0 = RGBImage(3, 4);
+	RGBImage rgb1 = RGBImage(3, 4);
 
 	const uint8_t data[] = {
 		255, 0, 0,
 		0, 255, 0,
 		0, 0, 255
 	};
+	RGBImage img3(data, 2, 2);
+
+	auto up = std::make_unique<uint8_t[]>(3000);
+	RGBImage img4(std::move(up), 100, 10);
 
 }
