@@ -34,10 +34,10 @@ public:
 		std::cout << "move" << std::endl;
 	}
 
-	RGBImage(const RGBImage& img)
+	RGBImage(const RGBImage& img)		// Copy Constructor
 		: RGBImage(img.m_width, img.m_height)
 	{
-		std::copy(std::move(m_data), m_data + m_size, m_data.get());
+		std::copy(img.m_data.get(), img.m_data.get() + m_size, m_data.get());
 		std::cout << "copy" << std::endl;
 	}
 
