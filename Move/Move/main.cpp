@@ -31,5 +31,6 @@ int main() {
 	test(x + 5);	// r value
 	test(*ptr);		// l value
 
+	test(std::move(x));
 
 }
