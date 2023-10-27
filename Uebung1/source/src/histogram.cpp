@@ -1,5 +1,6 @@
 #include <iostream>
 #include "histogram.hpp"
+#include <cmath>
 
 using namespace std;
 
@@ -25,6 +26,21 @@ void Histogram::process(const RGBImage& img, int numBins) {
     mNumBins = numBins;
     mData = make_unique<int[]>(numBins);
     // TODO [Aufgabe] 2.b)
+
+    double bins = 1.0 / numBins;        // range of 1 bins
+
+    for (int y = 0; y < img.getHeight(); y++) {
+        for (int x = 0; x < img.getWidth(); x++) {
+            if (img.getPixel(x, y).getBrightness() < 1 - bins) {
+                int bClass = (int) (img.getPixel(x, y).getBrightness() / bins);     // which bins class the pixel should be
+                mData[bClass]++;                  
+            }
+            else {
+                mData[numBins - 1]++;       // last bins class
+            }
+        }
+    }
+
 }
 
 void Histogram::print(int height) const {
