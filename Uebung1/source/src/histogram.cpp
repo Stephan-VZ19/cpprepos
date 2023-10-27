@@ -47,6 +47,30 @@ void Histogram::print(int height) const {
     // TODO [Aufgabe] 2.c)
     // cout << "❚";
 
+    // search highest value
+    int posHighest = 0;
+    for (int i = 1; i < mNumBins; i++) {
+        if (mData[posHighest] < mData[i]) {
+            posHighest = i;
+        }
+    }
+
+    double blockSize = (mData[posHighest] * 1.0) / height;
+
+    // print each line, if each bins has enough value like i, print a block
+    for (int i = 0; i < height; i++) {
+        cout << "❚";
+        for (int j = 0; j < mNumBins; j++) {
+            if (mData[j] >= mData[posHighest] - i * blockSize) {
+                cout << "❚";
+            }
+            else {
+                cout << " ";
+            }
+            cout << endl;
+        }
+    }
+
     cout << "|";
     for (int i = 1; i < mNumBins-1; i++) {
         cout <<  "-";
