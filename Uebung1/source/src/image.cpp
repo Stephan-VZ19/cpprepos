@@ -52,19 +52,14 @@ void RGBImage::load(istream& in) {
 
     // TODO [Aufgabe] 1.b)
     else if (magic == "P6") {       
-
         const size_t readCharsSize = mSize * sizeof(RGBPixel);
-
-        in.read((char*)(mData.get()), readCharsSize);
-
+        in.read((char*) (mData.get()), readCharsSize);
     }
 
     else
     {
         throw std::runtime_error("error magic number");
     }
-    
-    
 }
 
 void RGBImage::write(ostream& out) const {
@@ -81,10 +76,21 @@ void RGBImage::setPixel(int x, int y, const RGBPixel &px) {
 
 double RGBPixel::getBrightness() const {
     // TODO [Aufgabe] 2.a)
-    return (red + green + blue) / (3.0 * 255);  // zuerst int addieren, erst nachher double divid. -> nur einmal dividieren!
+    return (red + green + blue) / (3.0 * 255);  // -> nur einmal dividieren
 }
 
 Coordinate RGBImage::findBrightestPixel() const {
     // TODO [Aufgabe] 3.a)
-    return {0, 0};
+    int xb = 0, yb = 0;
+
+    for (int y = 0; y < mHeight; y++) {
+        for (int x = 0; x < mWidth; x++) {
+            if (getPixel(x, y).getBrightness() > getPixel(xb, yb).getBrightness()) {
+                xb = x;
+                yb = y;
+            }
+        }
+    }
+
+    return {xb, yb};
 }
