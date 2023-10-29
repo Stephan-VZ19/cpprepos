@@ -53,7 +53,7 @@ void RGBImage::load(istream& in) {
     // TODO [Aufgabe] 1.b)
     else if (magic == "P6") {       
         const size_t readCharsSize = mSize * sizeof(RGBPixel);
-        in.read((char*) (mData.get()), readCharsSize);
+        in.read((char*) mData.get(), readCharsSize);
     }
 
     else
@@ -64,6 +64,12 @@ void RGBImage::load(istream& in) {
 
 void RGBImage::write(ostream& out) const {
     // TODO [Aufgabe] 3.b)
+    /*out << "P6";
+    out << "/n";
+    out << mWidth << mHeight;
+    out << "255";
+    const size_t writeCharSize = mSize * sizeof(RGBPixel);
+    out, write(mData, writeCharSize);*/
 }
 
 const RGBPixel RGBImage::getPixel(int x, int y) const {
