@@ -59,7 +59,7 @@ void Histogram::print(int height) const {
     for (int i = height; i > 0; i--) {
         cout << "❚";
         for (int j = 0; j < mNumBins; j++) {
-            if ((i / mData[posHighest]) * height >= mData[j]) {
+            if ((i / mData[posHighest]) * i >= (i / mData[j]) * i) {
                 cout << "❚";
             }
             else {

@@ -20,8 +20,8 @@ namespace math {
 
 void precisionTest() {
 	const int x = 99;
-	const double frac = 1.0 / x;
-	double sum = 0.0;
+	const Fraction frac = 1.0 / x;
+	Fraction sum = 0.0;
 	for (int i = 0; i < x; ++i) {
 		sum += frac;
 	}
@@ -33,6 +33,9 @@ int main() {
 	Fraction f1(1, 2);
 	Fraction f2(-2, 2);
 	Fraction f3 = 2;
+	Fraction f4(-1, -4);
 	std::cout << f1 << std::endl;
 	std::cout << f2 << std::endl;
+	std::cout << f3 << std::endl;
+	std::cout << f4 << std::endl;
 }

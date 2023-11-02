@@ -16,6 +16,10 @@ public:
 		reduce();
 	}
 
+	explicit operator double() const;
+	Fraction operator-() const;
+	Fraction& operator+=(const Fraction& other);
+	friend bool operator==(const Fraction& lhs, const Fraction& rhs);
 	friend std::ostream &operator<<(std::ostream& os, const Fraction& f);
 
 };

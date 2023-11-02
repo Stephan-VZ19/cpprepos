@@ -29,3 +29,22 @@ void Fraction::reduce() {
 		m_bottom /= gcd;
 	}
 }
+
+Fraction Fraction::operator-() const {
+	return Fraction(-m_top, -m_bottom);
+}
+
+Fraction& Fraction::operator+=(const Fraction& other) {
+	m_top = m_top * other.m_bottom + other.m_top * m_bottom;
+	m_bottom = m_bottom * other.m_bottom;
+	reduce();
+	return *this;
+}
+
+bool operator==(const Fraction& lhs, const Fraction& rhs) {
+	return lhs.m_top == rhs.m_top && lhs.m_bottom == rhs.m_bottom;
+}
+
+Fraction::operator double() const {
+
+}
