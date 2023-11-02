@@ -14,8 +14,19 @@ namespace math {
 	}
 }
 
+// using namespace math;	ambigious
+
+void precisionTest() {
+	const int x = 99;
+	const double frac = 1.0 / x;
+	double sum = 0.0;
+	for (int i = 0; i < x; ++i) {
+		sum += frac;
+	}
+	if (sum == 1) std::cout << "Adds up to 1" << std::endl;
+	else std::cout << "Sum is not 1" << std::endl;
+}
+
 int main() {
-	test(2);
-	test(2 * 1.0);
-	math::test(3);
+	precisionTest();
 }
