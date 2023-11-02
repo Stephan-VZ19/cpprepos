@@ -33,4 +33,6 @@ int main() {
 	Fraction f1(1, 2);
 	Fraction f2(-2, 2);
 	Fraction f3 = 2;
+	std::cout << f1 << std::endl;
+	std::cout << f2 << std::endl;
 }

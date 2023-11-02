@@ -1,6 +1,7 @@
 #include "Fraction.hpp"
 #include <math.h>
 #include <cstdint>
+#include <numeric>
 
 std::ostream &operator<<(std::ostream& os, const Fraction& f) {
 	if (f.m_bottom == 0) {
