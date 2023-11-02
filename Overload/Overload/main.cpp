@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include "Fraction.hpp"
 
 void test(int a) {
 	std::cout << "Variante 1" << std::endl;
@@ -29,5 +30,7 @@ void precisionTest() {
 }
 
 int main() {
-	precisionTest();
+	Fraction f1(1, 2);
+	Fraction f2(-2, 2);
+	Fraction f3 = 2;
 }

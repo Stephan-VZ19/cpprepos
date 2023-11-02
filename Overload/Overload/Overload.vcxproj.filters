@@ -18,9 +18,12 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Fraction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Fraktion.hpp">
+    <ClInclude Include="Fraction.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
