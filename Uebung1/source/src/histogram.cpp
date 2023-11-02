@@ -48,10 +48,10 @@ void Histogram::print(int height) const {
     // cout << "❚";
 
     // search highest value
-    int posHighest = 0;
+    int highest = 0;
     for (int i = 1; i < mNumBins; i++) {
-        if (mData[posHighest] < mData[i]) {
-            posHighest = i;
+        if (highest > mData[i]) {
+            highest = mData[i];
         }
     }
 
@@ -59,7 +59,8 @@ void Histogram::print(int height) const {
     for (int i = height; i > 0; i--) {
         cout << "❚";
         for (int j = 0; j < mNumBins; j++) {
-            if ((i / mData[posHighest]) * i >= (i / mData[j]) * i) {
+            const int h = mData[i] * height / highest;
+            if (i <= h) {
                 cout << "❚";
             }
             else {
