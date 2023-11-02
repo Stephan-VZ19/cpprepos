@@ -37,5 +37,5 @@ int main() {
 	std::cout << f1 << std::endl;
 	std::cout << f2 << std::endl;
 	std::cout << f3 << std::endl;
-	std::cout << f4 << std::endl;
+	std::cout << (double) f4 << std::endl;
 }

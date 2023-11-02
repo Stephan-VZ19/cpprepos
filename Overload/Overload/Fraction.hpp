@@ -19,7 +19,9 @@ public:
 	explicit operator double() const;
 	Fraction operator-() const;
 	Fraction& operator+=(const Fraction& other);
+	friend Fraction operator+(const Fraction& lhs, const Fraction& rhs);
 	friend bool operator==(const Fraction& lhs, const Fraction& rhs);
+	friend std::partial_ordering operator<=>(const Fraction& lhs, const Fraction& rhs);
 	friend std::ostream &operator<<(std::ostream& os, const Fraction& f);
 
 };

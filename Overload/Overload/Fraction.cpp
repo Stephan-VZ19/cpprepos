@@ -42,9 +42,19 @@ Fraction& Fraction::operator+=(const Fraction& other) {
 }
 
 bool operator==(const Fraction& lhs, const Fraction& rhs) {
-	return lhs.m_top == rhs.m_top && lhs.m_bottom == rhs.m_bottom;
+	return lhs.m_top == rhs.m_top && lhs.m_bottom == rhs.m_bottom;	// return (lhs <=> rhs) == std::partial_ordering::equivalent
 }
 
 Fraction::operator double() const {
+	return m_top * 1.0 / m_bottom;
+}
 
+Fraction operator+(const Fraction& lhs, const Fraction& rhs) {
+	Fraction sum = lhs;
+	sum += rhs;
+	return sum;
+}
+
+std::partial_ordering operator<=>(const Fraction& lhs, const Fraction& rhs) {
+	return (double)lhs <=> (double)rhs;
 }
