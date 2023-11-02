@@ -69,7 +69,7 @@ void RGBImage::write(ostream& out) const {
     out << mWidth << mHeight;
     out << "255";
     const size_t writeCharSize = mSize * sizeof(RGBPixel);
-    out.write((char*)mData.get(), writeCharSize);
+    out.write((char*)mData.get(), writeCharSize);       // mData ist ein RBG Pointer
 }
 
 const RGBPixel RGBImage::getPixel(int x, int y) const {

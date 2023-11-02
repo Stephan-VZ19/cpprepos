@@ -25,7 +25,7 @@ void precisionTest() {
 		sum += frac;
 	}
 	if (sum == 1) std::cout << "Adds up to 1" << std::endl;
-	else std::cout << "Sum is not 1: " << std::setprecision(sum) << std::endl;
+	else std::cout << "Sum is not 1: " << std::setprecision(20) << sum << std::endl;
 }
 
 int main() {
