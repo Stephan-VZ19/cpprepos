@@ -1,4 +1,6 @@
 #include "Fraction.hpp"
+#include <math.h>
+#include <cstdint>
 
 std::ostream &operator<<(std::ostream& os, const Fraction& f) {
 	if (f.m_bottom == 0) {
@@ -17,4 +19,12 @@ std::ostream &operator<<(std::ostream& os, const Fraction& f) {
 		return os << f.m_top << "/" << f.m_bottom;
 	}
 	
+}
+
+void Fraction::reduce() {
+	const int gcd = std::gcd(m_top, m_bottom);		// gcd sollte im C++20 drin sein
+	if (gcd != 0) {
+		m_top /= gcd;
+		m_bottom /= gcd;
+	}
 }
