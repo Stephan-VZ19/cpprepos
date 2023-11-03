@@ -49,25 +49,25 @@ void Histogram::print(int height) const {
 
     // search highest value
     int highest = 0;
-    for (int i = 1; i < mNumBins; i++) {
-        if (highest > mData[i]) {
+    for (int i = 0; i < mNumBins; i++) {
+        if (highest < mData[i]) {
             highest = mData[i];
         }
     }
 
     // print each line, if each bins has enough value like i, print a block
-    for (int i = height; i > 0; i--) {
-        cout << "❚";
-        for (int j = 0; j < mNumBins; j++) {
-            const int h = mData[i] * height / highest;
-            if (i <= h) {
+    for (int line = height; line > 0; line--) {      // height = number of lines, line = 1 bar
+        cout << "❚";        // anfangs jeder line
+        for (int i = 0; i < mNumBins; i++) {        // i for each bin
+            const int h = ((mData[i] * height) / highest);      // actual bin computed to bars, smaller than double value
+            if (line <= h) {
                 cout << "❚";
             }
             else {
                 cout << " ";
             }
-            cout << endl;
         }
+        cout << endl;
     }
 
     cout << "|";
