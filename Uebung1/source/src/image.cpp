@@ -88,10 +88,12 @@ double RGBPixel::getBrightness() const {
 Coordinate RGBImage::findBrightestPixel() const {
     // TODO [Aufgabe] 3.a)
     int xb = 0, yb = 0;
+    RGBPixel b = getPixel(xb, yb);
 
     for (int y = 0; y < mHeight; y++) {
         for (int x = 0; x < mWidth; x++) {
-            if (getPixel(x, y).getBrightness() > getPixel(xb, yb).getBrightness()) {
+            if (getPixel(x, y).getBrightness() > b.getBrightness()) {
+                b = getPixel(x, y);
                 xb = x;
                 yb = y;
             }
