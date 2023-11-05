@@ -57,9 +57,8 @@ void Histogram::print(int height) const {
 
     // print each line, if each bins has enough value like i, print a block
     for (int line = height; line > 0; line--) {      // height = number of lines, line = 1 bar
-        cout << "❚";        // anfangs jeder line
         for (int i = 0; i < mNumBins; i++) {        // i for each bin
-            const int h = ((mData[i] * height) / highest);      // actual bin computed to bars, smaller than double value
+            const int h = (mData[i] * height) / highest;      // actual bin computed to bars
             if (line <= h) {
                 cout << "❚";
             }
@@ -67,7 +66,7 @@ void Histogram::print(int height) const {
                 cout << " ";
             }
         }
-        cout << endl;
+        cout << endl;       // neue Linie
     }
 
     cout << "|";
