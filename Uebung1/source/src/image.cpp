@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "image.hpp"
+#include <string>
 
 using namespace std;
 
@@ -64,12 +65,11 @@ void RGBImage::load(istream& in) {
 
 void RGBImage::write(ostream& out) const {
     // TODO [Aufgabe] 3.b)
-    out << "P6";
-    out << "/n";
-    out << mWidth << mHeight;
-    out << "255";
+    out << "P6" << "\n";
+    out << mWidth << " " << mHeight << "\n";
+    out << "255" << "\n";
     const size_t writeCharSize = mSize * sizeof(RGBPixel);
-    out.write((char*)mData.get(), writeCharSize);       // mData ist ein RBG Pointer
+    out.write((char*) mData.get(), writeCharSize);       // mData ist ein RBG Pointer
 }
 
 const RGBPixel RGBImage::getPixel(int x, int y) const {
