@@ -31,8 +31,6 @@ void Histogram::process(const RGBImage& img, int numBins) {
 
     const double lastBin = 1 - 1.0 / numBins;
 
-    const RGBImage* pData = new RGBImage(img.getWidth(), img.getHeight());      // heap image for efficiency~ ?
-
     for (int y = 0; y < img.getHeight(); y++) {
         for (int x = 0; x < img.getWidth(); x++) {
 
