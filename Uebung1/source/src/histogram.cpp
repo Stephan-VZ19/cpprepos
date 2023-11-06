@@ -29,10 +29,17 @@ void Histogram::process(const RGBImage& img, int numBins) {
 
     // double bins = 1.0 / numBins;        // range of 1 bins
 
+    const double lastBin = 1 - 1.0 / numBins;
+
+    const RGBImage* pData = new RGBImage(img.getWidth(), img.getHeight());      // heap image for efficiency~ ?
+
     for (int y = 0; y < img.getHeight(); y++) {
         for (int x = 0; x < img.getWidth(); x++) {
-            if (img.getPixel(x, y).getBrightness() < 1 - 1 / numBins) {
-                int bClass = (int) (img.getPixel(x, y).getBrightness() * numBins);     // which bins class the pixel should be
+
+            const double pBright = img.getPixel(x, y).getBrightness();
+
+            if (pBright < lastBin) {
+                int bClass = (int) (pBright * numBins);     // which bins class the pixel should be
                 mData[bClass]++;                  
             }
             else {
