@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdint>
 #include <span>
+#include "Pixel.h"
 
 // Student's version
 
@@ -35,11 +36,15 @@ public:
     double brightness(int x, int y) const;
     double brightness() const;
     size_t whitePixels() const;
+    
 
     void load(const std::span<uint8_t>& data);
     void load(std::unique_ptr<uint8_t[]>&& data);
 
     friend std::ostream& operator<<(std::ostream& os, const Image& img);
+
+    virtual bool isWhite(int x, int y) const = 0;   // pure virtual == abstract
+    virtual const PixelData& getData(int x, int y) const = 0;
 };
 
 class GrayscaleImage : public Image {
@@ -52,6 +57,13 @@ public:
     ~GrayscaleImage() {
         std::cout << "~GrayscaleImage" << std::endl;
     }
+
+    bool isWhite(int x, int y) const {
+        GrayPixelData* p = reinterpret_cast<GrayPixelData*>(data(x, y));      // ist ein Point p der an die richte Stelle zeigt im Bild
+        return p->isWhite(); 
+    }
+
+    virtual GrayPixelData& getData(int x, int y) const override {}
 };
 
 class RGBImage : public Image {
@@ -63,5 +75,15 @@ public:
     {}
     ~RGBImage() {
         std::cout << "~RGBImage" << std::endl;
+    }
+
+    bool isWhite(int x, int y) const {
+        RGBImage* p = reinterpret_cast<RGBImage*>(data(x, y));      // ist ein Point p der an die richtige Stelle zeigt im Bild
+        return p->isWhite(x, y);
+    }
+
+    bool isWhite(int x, int y) const {
+        GrayPixelData* p = reinterpret_cast<GrayPixelData*>(data(x, y));      // ist ein Point p der an die richte Stelle zeigt im Bild
+        return p->isWhite();
     }
 };
