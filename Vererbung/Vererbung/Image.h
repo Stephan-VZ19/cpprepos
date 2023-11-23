@@ -17,6 +17,9 @@ public:
     Image(int width, int height, int nChannels);
     Image(const Image& img);
     Image(Image&& img) noexcept;
+    ~Image() {
+        std::cout << "~Image" << std::endl;
+    }
 
     Image& operator=(const Image& other);
     Image& operator=(Image&& other) noexcept;
