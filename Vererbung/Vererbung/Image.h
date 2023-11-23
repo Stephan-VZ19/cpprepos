@@ -44,7 +44,8 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Image& img);
 
     virtual bool isWhite(int x, int y) const = 0;   // pure virtual == abstract
-    virtual const PixelData& getPixel(int x, int y) const = 0;
+    virtual const PixelData& getPixel(int x, int y) const = 0;      // nur für Lesezwecke nutzen
+    virtual PixelData& getPixel(int x, int y) = 0;      // um den Pixel zu überschreiben
 };
 
 class GrayscaleImage : public Image {
@@ -67,6 +68,10 @@ public:
     virtual GrayPixelData& getPixel(int x, int y) const override {
         return *reinterpret_cast<GrayPixelData*>(data(x, y));
     }
+
+    virtual GrayPixelData& getPixel(int x, int y) override {
+        return *reinterpret_cast<GrayPixelData*>(data(x, y));
+    }
 };
 
 class RGBImage : public Image {
@@ -86,6 +91,10 @@ public:
     }
 
     virtual RGBPixelData& getPixel(int x, int y) const override {
+        return *reinterpret_cast<RGBPixelData*>(data(x, y));
+    }
+
+    virtual RGBPixelData& getPixel(int x, int y) override {
         return *reinterpret_cast<RGBPixelData*>(data(x, y));
     }
 };
