@@ -74,7 +74,7 @@ size_t Image::whitePixels() const {
     size_t n = 0;
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
-            n += isWhite();
+            n += isWhite(x, y);
         }
     }
     return n;

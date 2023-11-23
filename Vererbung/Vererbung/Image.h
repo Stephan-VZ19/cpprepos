@@ -44,11 +44,12 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Image& img);
 
     virtual bool isWhite(int x, int y) const = 0;   // pure virtual == abstract
-    virtual const PixelData& getData(int x, int y) const = 0;
+    virtual const PixelData& getPixel(int x, int y) const = 0;
 };
 
 class GrayscaleImage : public Image {
     const static int s_numChannels = 1;     // braucht kein Speicher weil const, wird einfach 1 eingesetzt
+    static_assert(sizeof(GrayPixelData) == s_numChannels, "wrong size");        // guard für Fehler
 
 public:
     GrayscaleImage(int width, int height)
@@ -63,7 +64,9 @@ public:
         return p->isWhite(); 
     }
 
-    virtual GrayPixelData& getData(int x, int y) const override {}
+    virtual GrayPixelData& getPixel(int x, int y) const override {
+        return *reinterpret_cast<GrayPixelData*>(data(x, y));
+    }
 };
 
 class RGBImage : public Image {
@@ -78,12 +81,11 @@ public:
     }
 
     bool isWhite(int x, int y) const {
-        RGBImage* p = reinterpret_cast<RGBImage*>(data(x, y));      // ist ein Point p der an die richtige Stelle zeigt im Bild
-        return p->isWhite(x, y);
+        RGBPixelData* p = reinterpret_cast<RGBPixelData*>(data(x, y));      // ist ein Point p der an die richte Stelle zeigt im Bild
+        return p->isWhite();
     }
 
-    bool isWhite(int x, int y) const {
-        GrayPixelData* p = reinterpret_cast<GrayPixelData*>(data(x, y));      // ist ein Point p der an die richte Stelle zeigt im Bild
-        return p->isWhite();
+    virtual RGBPixelData& getPixel(int x, int y) const override {
+        return *reinterpret_cast<RGBPixelData*>(data(x, y));
     }
 };
