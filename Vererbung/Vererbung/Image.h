@@ -46,6 +46,8 @@ public:
     virtual bool isWhite(int x, int y) const = 0;   // pure virtual == abstract
     virtual const PixelData& getPixel(int x, int y) const = 0;      // nur für Lesezwecke nutzen
     virtual PixelData& getPixel(int x, int y) = 0;      // um den Pixel zu überschreiben
+
+    virtual void setPixel(int x, int y, const PixelData& px) = 0;
 };
 
 class GrayscaleImage : public Image {
@@ -71,6 +73,12 @@ public:
 
     virtual GrayPixelData& getPixel(int x, int y) override {
         return *reinterpret_cast<GrayPixelData*>(data(x, y));
+    }
+
+    virtual void setPixel(int x, int y, const PixelData& px) override {
+        const GrayPixelData& grayPx = dynamic_cast<const GrayPixelData&>(px);
+
+        *reinterpret_cast<GrayPixelData*>(data(x, y)) = grayPx;
     }
 };
 

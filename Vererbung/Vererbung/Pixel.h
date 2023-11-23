@@ -15,10 +15,6 @@ struct GrayPixelData : public PixelData {
 		: m_intensity(intensity)
 	{}
 
-	bool isWhite() const {
-		return m_intensity == 255;
-	}
-
 	friend std::ostream& operator<<(std::ostream& os, const GrayPixelData px) {
 		return os << (int)px.m_intensity;		// sonst wird der char Ausgabeoperator aufgerufen weil uint8_t
 	}
@@ -33,13 +29,34 @@ struct RGBPixelData : PixelData {
 		, m_red((uint8_t)(px >> 16))
 	{}
 
-	bool isWhite() const {
-		return m_blue == 255 && m_green == 255 && m_red == 255;
-	}
-
 	friend std::ostream& operator<<(std::ostream& os, const RGBPixelData px) {
 		return os << '(' << (int)px.m_red << ','
 				         << (int)px.m_green << ','
 						 << (int)px.m_blue << ')';
 	}
+};
+
+struct Pixel {		// interface Klasse, hat nur virtual Funktionen
+	virtual bool isWhite() const = 0;
+};
+
+struct GrayPixel : GrayPixelData, Pixel {
+	GrayPixel(const GrayPixelData& px)
+		: GrayPixelData(px)
+	{}
+
+	bool isWhite() const override {
+		return m_intensity == 255;
+	}
+};
+
+struct RGBPixel : RGBPixelData, Pixel {
+	RGBPixel(const RGBPixelData& px)
+		: RGBPixelData(px)
+	{}
+
+	bool isWhite() const {
+		return m_blue == 255 && m_green == 255 && m_red == 255;
+	}
+
 };
