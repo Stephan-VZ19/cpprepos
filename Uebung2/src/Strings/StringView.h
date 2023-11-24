@@ -18,7 +18,10 @@ public:
 	/// <summary>
 	/// Standard constructor. Set data to nullptr and size to 0.
 	/// </summary>
-	constexpr StringView() noexcept;
+	constexpr StringView() noexcept
+		: m_data(nullptr)
+		, m_size(0)
+	{}
 	
 	constexpr StringView(const StringView& s) noexcept = default;
 	
@@ -26,7 +29,16 @@ public:
 	/// Creates string view of a valid C-String. Throws an std::invalid_argument exception for an invalid string literal.
 	/// </summary>
 	/// <param name="s">zero terminated C-String</param>
-	constexpr StringView(const char* s);
+	constexpr StringView(const char* s)
+		: m_data(s)
+		, m_size(0)
+	{
+		if (nullptr == s) {
+			throw std::invalid_argument("invalid string litreal");
+		}
+		int i = 0;
+		while (m_data[i] != '\0') m_size++;
+	}
 	
 	/// <summary>
 	/// Creates string view of a string literal. Throws an std::invalid_argument exception for an invalid string literal.
