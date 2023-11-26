@@ -112,5 +112,89 @@ String String::substring(size_t beg, size_t end) const {
 	}
 }
 
+const char* String::toCString() const noexcept {
+	if (m_size < ShortCapacity) {		// Stack
+		return m_short;
+	}
+	else {								// Heap
+		return &m_data[0];
+	}
+}
 
+String& String::operator=(const String& s) noexcept {
+	m_size = s.m_size;
+	m_capacity = s.m_capacity;
+	if (m_size < ShortCapacity) {		// Stack
+		m_data = nullptr;
+		for (int i = 0; i < s.m_size; i++) {
+			m_short[i] = s.m_short[i];
+		}
+	}
+	else {								// Heap
+		m_data = std::make_unique<char[]>(s.m_capacity);
+		for (int i = 0; i < s.m_size; i++) {
+			m_data[i] = s.m_data[i];
+		}
+		m_short[0] = '\0';
+	}
+	return *this;
+}
 
+String& String::operator=(String&& s) noexcept {
+	m_size = s.m_size;
+	m_capacity = s.m_capacity;
+	if (m_size < ShortCapacity) {		// Stack
+		m_data = nullptr;
+		for (int i = 0; i < s.m_size; i++) {
+			m_short[i] = s.m_short[i];
+		}
+	}
+	else {								// Heap
+		m_data = std::move(s.m_data);
+		m_short[0] = '\0';
+	}
+	return *this;
+}
+
+String& String::operator+=(char c) noexcept {
+	++m_size;
+	++m_capacity;
+	if (m_size < ShortCapacity - 1) {	// Stack
+		m_data = nullptr;
+		m_short[m_size] = c;
+		m_short[m_size + 1] = '\0';
+	}
+	else {								// Heap
+		m_data[m_size] = c;
+		m_data[m_size+1] = '\0';
+		m_short[0] = '\0';
+	}
+}
+
+String& String::operator+=(const String& s) noexcept {
+	throw std::runtime_error("not yet implemented");
+}
+
+String String::operator+(char c) const noexcept {
+	throw std::runtime_error("not yet implemented");
+}
+
+String String::operator+(const String& s) const noexcept {
+	throw std::runtime_error("not yet implemented");
+}
+
+char String::operator[](size_t i) const {
+	throw std::runtime_error("not yet implemented");
+}
+
+char& String::operator[](size_t i) {
+	throw std::runtime_error("not yet implemented");
+}
+
+std::strong_ordering String::operator<=>(const String& s) const noexcept {
+	throw std::runtime_error("not yet implemented");
+}
+
+void String::ensureCapacity(size_t capacity) {
+	throw std::runtime_error("not yet implemented");
+}
