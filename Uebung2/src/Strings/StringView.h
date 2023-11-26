@@ -34,10 +34,10 @@ public:
 		, m_size(0)
 	{
 		if (nullptr == s) {
-			throw std::invalid_argument("invalid string litreal");
+			throw std::invalid_argument("invalid string literal");
 		}
 		int i = 0;
-		while (m_data[i] != '\0') m_size++;
+		while (s[i] != '\0') m_size++;
 	}
 	
 	/// <summary>
@@ -45,36 +45,59 @@ public:
 	/// </summary>
 	/// <param name="s">string literal with at least len characters</param>
 	/// <param name="len">number of valid characters in s</param>
-	constexpr StringView(const char* s, size_t len);
+	constexpr StringView(const char* s, size_t len)
+		: m_data(s)
+		, m_size(len)
+	{
+		if (nullptr == s) {
+			throw new std::invalid_argument("invalid string literal");
+		}
+	}
 
 	/// <summary>
 	/// Returns true if the string view size is 0.
 	/// </summary>
-	constexpr bool isEmpty() const noexcept;
+	constexpr bool isEmpty() const noexcept {
+		return m_size < 1;
+	}
 	
 	/// <summary>
 	/// Returns string size view.
 	/// </summary>
-	constexpr size_t length() const noexcept;
+	constexpr size_t length() const noexcept {
+		return m_size;
+	}
 	
 	/// <summary>
 	/// Moves the start of the resulting string view forward by n characters.
 	/// Throws std::out_of_range exception if n > size.
 	/// </summary>
 	/// <param name="n">number of characters to remove from the start of the string view</param>
-	constexpr StringView removePrefix(size_t n) const;
+	constexpr StringView removePrefix(size_t n) const {
+		if (n < 0 || m_size < n) {
+			throw std::out_of_range("out of range");
+		}
+		return StringView(m_data + n, m_size - n);
+	}
 	
 	/// <summary>
 	/// Moves the end of the resulting string view backward by n characters.
 	/// Throws std::out_of_range exception if n > size.
 	/// </summary>
 	/// <param name="n">number of characters to remove from the end of the string view</param>
-	constexpr StringView removeSuffix(size_t n) const;
+	constexpr StringView removeSuffix(size_t n) const {
+		if (n < 0 || m_size < n) {
+			throw std::out_of_range("out of range");
+		}
+		return StringView(m_data, m_size - n);
+	}
 	
 	/// <summary>
 	/// Returns pointer to string.
 	/// </summary>
-	constexpr const char* data() const;
+	constexpr const char* data() const {
+		return m_data;
+	}
 
 	StringView& operator=(const StringView& s) noexcept = default;
 	
@@ -83,14 +106,41 @@ public:
 	/// Throws std::out_of_range exception if i >= size.
 	/// </summary>
 	/// <param name="i">character position</param>
-	constexpr const char operator[](size_t i) const;
+	constexpr const char operator[](size_t i) const {
+		if (i < 0 || m_size < i) {
+			throw std::out_of_range("out of range");
+		}
+		return m_data[i];
+	}
 	
 	/// <summary>
 	/// Compares two string views. The ordering comparisons are done lexicographically.
 	/// </summary>
 	/// <param name="s">rhs string view</param>
 	/// <returns>strong ordering</returns>
-	constexpr std::strong_ordering operator<=>(const StringView& s) const noexcept;
+	constexpr std::strong_ordering operator<=>(const StringView& s) const noexcept {
+		int i = 0;
+		while (i < m_size && i < s.m_size) {
+			if (m_data[i] < s.m_data[i]) {
+				return std::strong_ordering::less;
+			}
+			else if (m_data[i] > s.m_data[i]) {
+				return std::strong_ordering::greater;
+			}
+			else {
+				++i;		// same character
+			}
+		}
+		if (m_size == s.m_size) {
+			return std::strong_ordering::equal;		// same characters and same length
+		}
+		else if (m_size < s.m_size) {
+			return std::strong_ordering::greater;	// same characters *this is shorter
+		}
+		else {
+			return std::strong_ordering::less;		// same characters s is shorter
+		}
+	}
 
 	/// <summary>
 	/// Compares two string views.
@@ -128,5 +178,11 @@ private:
 	/// </summary>
 	/// <param name="s">s must be a zero terminated string literal</param>
 	/// <returns>the number of characters in s without terminating zero character</returns>
-	constexpr static size_t strLen(const char s[]);
+	constexpr static size_t strLen(const char s[]) {
+		int i = 0;
+		while (s[i] != '\0') {
+			++i;
+		}
+		return i;
+	}
 };
