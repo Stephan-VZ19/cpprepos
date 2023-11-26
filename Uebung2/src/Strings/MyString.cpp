@@ -54,7 +54,7 @@ String::String(String&& s) noexcept
 
 String::String(const char s[])
 	: m_size(0)
-	, m_capacity(0)
+	, m_capacity(ShortCapacity)
 	, m_data(nullptr)
 {
 	int i = 0;
@@ -68,7 +68,49 @@ String::String(const char s[])
 	}
 }
 
+String::String(const char s[], size_t len) 
+	: m_size(0)
+	, m_capacity(ShortCapacity)
+	, m_data(nullptr)
+{
+	int i = 0;
+	while (i < len && (s[i] != '\0' || i < ShortCapacity - 1) ) {
+		++m_size;
+		m_short[i] = s[i];
+	}
+	m_short[i] = '\0';
+	if (i > ShortCapacity - 1) {
+		throw std::runtime_error("string too big for stack");
+	}
+}
 
+
+bool String::isEmpty() const noexcept {
+	return m_size == 0;
+}
+
+size_t String::length() const noexcept {
+	return m_size;
+}
+
+size_t String::capacity() const noexcept {
+	return m_capacity;
+}
+
+String String::substring(size_t beg, size_t end) const {
+	if (beg > m_size) {
+		throw std::out_of_range("out of range");
+	}
+	if (end <= beg || end > m_size) {
+		end = m_size;
+	}
+	if (m_size < ShortCapacity) {		// Stack
+		return String(m_short + beg, end - beg);
+	}
+	else {								// Heap
+		throw std::runtime_error("heap not supported");
+	}
+}
 
 
 
