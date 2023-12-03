@@ -53,18 +53,25 @@ String::String(String&& s) noexcept
 }
 
 String::String(const char s[])
-	: m_size(0)
+	: m_size(sizeof(s))
 	, m_capacity(ShortCapacity)
 	, m_data(nullptr)
 {
-	int i = 0;
-	while (s[i] != '\0' || i < ShortCapacity - 1) {
-		++m_size;
-		m_short[i] = s[i];
+	if (m_size < ShortCapacity) {		// Stack
+		int i = 0;
+		while (s[i] != '\0') {
+			m_short[i] = s[i];
+			++m_size;
+			++i;
+		}
 	}
-	m_short[i] = '\0';
-	if (i > ShortCapacity -1) {
-		throw std::runtime_error("string too big for stack");
+	else {								// Heap
+		ensureCapacity(m_size);
+		m_capacity = m_size + 1;
+		m_data = std::make_unique<char[]>(m_size);
+		for (int i = 0; i < m_size; i++) {
+			m_data[i] = m_data[i];
+		}
 	}
 }
 
@@ -77,6 +84,7 @@ String::String(const char s[], size_t len)
 	while (i < len && (s[i] != '\0' || i < ShortCapacity - 1) ) {
 		++m_size;
 		m_short[i] = s[i];
+		++i;
 	}
 	m_short[i] = '\0';
 	if (i > ShortCapacity - 1) {
