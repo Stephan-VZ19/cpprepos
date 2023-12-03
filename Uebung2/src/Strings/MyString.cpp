@@ -160,17 +160,19 @@ String& String::operator=(String&& s) noexcept {
 }
 
 String& String::operator+=(char c) noexcept {
-	++m_size;
-	++m_capacity;
 	if (m_size < ShortCapacity - 1) {	// Stack
 		m_data = nullptr;
 		m_short[m_size] = c;
 		m_short[m_size + 1] = '\0';
+		++m_size;
 	}
 	else {								// Heap
+		ensureCapacity(m_capacity);
 		m_data[m_size] = c;
 		m_data[m_size+1] = '\0';
 		m_short[0] = '\0';
+		++m_capacity;
+		++m_size;
 	}
 }
 
@@ -199,11 +201,11 @@ std::strong_ordering String::operator<=>(const String& s) const noexcept {
 }
 
 void String::ensureCapacity(size_t capacity) {
-	if (m_size < ShortCapacity - 1 || m_capacity % ShortCapacity < ShortCapacity - 1) {		// at least 1 slot free
+	if (m_size < ShortCapacity - 1 || capacity % ShortCapacity < ShortCapacity - 1) {		// at least 1 slot free
 		return;
 	}
-	else if (m_capacity == ShortCapacity) {		// Stack string copy into heap
-		auto data = std::make_unique<char[]>(2*m_capacity);
+	else if (capacity == ShortCapacity) {		// Stack string copy into heap
+		auto data = std::make_unique<char[]>(2*capacity);
 		for (int i = 0; i < m_size; i++) {
 			data[i] = m_data[i];
 		}
@@ -212,7 +214,7 @@ void String::ensureCapacity(size_t capacity) {
 	}
 	else {										// Heap string to heap + ShortCapacity string
 		int multiplier = m_size / ShortCapacity;
-		auto data = std::make_unique<char[]>((++multiplier) * m_capacity);
+		auto data = std::make_unique<char[]>((++multiplier) * ShortCapacity);
 		for (int i = 0; i < m_size; i++) {
 			data[i] = m_data[i];
 		}
