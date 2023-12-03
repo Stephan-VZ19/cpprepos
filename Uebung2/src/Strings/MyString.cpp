@@ -141,6 +141,9 @@ String& String::operator=(const String& s) noexcept {
 }
 
 String& String::operator=(String&& s) noexcept {
+	if (*this == s) {
+		return *this;
+	}
 	m_size = s.m_size;
 	m_capacity = s.m_capacity;
 	if (m_size < ShortCapacity) {		// Stack
@@ -196,5 +199,24 @@ std::strong_ordering String::operator<=>(const String& s) const noexcept {
 }
 
 void String::ensureCapacity(size_t capacity) {
-	throw std::runtime_error("not yet implemented");
+	if (m_size < ShortCapacity - 1 || m_capacity % ShortCapacity < ShortCapacity - 1) {		// at least 1 slot free
+		return;
+	}
+	else if (m_capacity == ShortCapacity) {		// Stack string copy into heap
+		auto data = std::make_unique<char[]>(2*m_capacity);
+		for (int i = 0; i < m_size; i++) {
+			data[i] = m_data[i];
+		}
+		m_data = move(data);
+		m_short[0] = '\0';
+	}
+	else {										// Heap string to heap + ShortCapacity string
+		int multiplier = m_size / ShortCapacity;
+		auto data = std::make_unique<char[]>((++multiplier) * m_capacity);
+		for (int i = 0; i < m_size; i++) {
+			data[i] = m_data[i];
+		}
+		m_data = move(data);
+		m_short[0] = '\0';
+	}
 }

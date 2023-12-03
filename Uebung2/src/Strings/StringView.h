@@ -8,7 +8,7 @@
 /// This wrapper is not the owner of the string and does never allocate and free memory on heap.
 /// All implementations must be done inside this file.
 /// 
-/// Author: ???
+/// Author: Stephan Baumann
 /// </summary>
 class StringView {
 	const char* m_data;	// string (character sequence) of length m_size (or longer, zero termination is not guaranteed)
@@ -37,7 +37,7 @@ public:
 			throw std::invalid_argument("invalid string literal");
 		}
 		int i = 0;
-		while (s[i] != '\0') m_size++;
+		while (s[i] != '\0') ++m_size;
 	}
 	
 	/// <summary>
