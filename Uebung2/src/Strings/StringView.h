@@ -31,13 +31,11 @@ public:
 	/// <param name="s">zero terminated C-String</param>
 	constexpr StringView(const char* s)
 		: m_data(s)
-		, m_size(0)
+		, m_size(strlen(s))
 	{
 		if (nullptr == s) {
 			throw std::invalid_argument("invalid string literal");
 		}
-		int i = 0;
-		while (s[i] != '\0') ++m_size;
 	}
 	
 	/// <summary>

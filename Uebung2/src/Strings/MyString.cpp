@@ -211,11 +211,16 @@ String& String::operator+=(const String& s) noexcept {
 }
 
 String String::operator+(char c) const noexcept {
-		return toCString() + c;
+	return String(toCString() + c);
 }
 
 String String::operator+(const String& s) const noexcept {
-	throw std::runtime_error("not yet implemented");
+	const char* str = toCString();
+	int so = sizeof(s.toCString());
+	for (int i = 0; i < so; i++) {
+		*this + s.toCString();
+	}
+	return String();
 }
 
 char String::operator[](size_t i) const {
