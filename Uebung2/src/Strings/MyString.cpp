@@ -193,7 +193,7 @@ String& String::operator+=(char c) noexcept {
 
 String& String::operator+=(const String& s) noexcept {
 	int len = m_size + s.m_size + 1;
-	if (len < ShortCapacity - 1) {	// Stack
+	if (len < ShortCapacity - 1) {		// Stack
 		m_data = nullptr;
 		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
 			m_short[i] = s.m_short[j];
@@ -224,11 +224,27 @@ String String::operator+(const String& s) const noexcept {
 }
 
 char String::operator[](size_t i) const {
-	throw std::runtime_error("not yet implemented");
+	if (i > m_size) {
+		throw std::out_of_range("out of range");
+	}
+	if (m_size < ShortCapacity) {
+		return m_short[i];
+	}
+	else {
+		return m_data[i];
+	}
 }
 
 char& String::operator[](size_t i) {
-	throw std::runtime_error("not yet implemented");
+	if (i > m_size) {
+		throw std::out_of_range("out of range");
+	}
+	if (m_size < ShortCapacity) {
+		return m_short[i];
+	}
+	else {
+		return m_data[i];
+	}
 }
 
 std::strong_ordering String::operator<=>(const String& s) const noexcept {
