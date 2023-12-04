@@ -61,7 +61,6 @@ String::String(const char s[])
 		int i = 0;
 		while (s[i] != '\0') {
 			m_short[i] = s[i];
-			++m_size;
 			++i;
 		}
 	}
@@ -76,19 +75,25 @@ String::String(const char s[])
 }
 
 String::String(const char s[], size_t len) 
-	: m_size(0)
+	: m_size(len)
 	, m_capacity(ShortCapacity)
 	, m_data(nullptr)
 {
-	int i = 0;
-	while (i < len && (s[i] != '\0' || i < ShortCapacity - 1) ) {
-		++m_size;
-		m_short[i] = s[i];
-		++i;
+	if (m_size < ShortCapacity) {		// Stack
+		int i = 0;
+		while (i < len && s[i] != '\0') {
+			m_short[i] = s[i];
+			++i;
+		}
 	}
-	m_short[i] = '\0';
-	if (i > ShortCapacity - 1) {
-		throw std::runtime_error("string too big for stack");
+	else {								// Heap
+		ensureCapacity(len);
+		m_capacity = m_size + 1;
+		m_data = std::make_unique<char[]>(m_size);
+		for (int i = 0; i < len; i++) {
+			m_data[i] = m_data[i];
+		}
+		m_short[0] = '\0';
 	}
 }
 
@@ -116,7 +121,7 @@ String String::substring(size_t beg, size_t end) const {
 		return String(m_short + beg, end - beg);
 	}
 	else {								// Heap
-		throw std::runtime_error("heap not supported");
+		return String(&m_data[beg], end - beg);
 	}
 }
 
@@ -125,7 +130,7 @@ const char* String::toCString() const noexcept {
 		return m_short;
 	}
 	else {								// Heap
-		return &m_data[0];
+		return m_data.get();
 	}
 }
 
@@ -168,28 +173,45 @@ String& String::operator=(String&& s) noexcept {
 }
 
 String& String::operator+=(char c) noexcept {
-	if (m_size < ShortCapacity - 1) {	// Stack
+	int len = m_size + 1;
+	if (len < ShortCapacity - 1) {	// Stack
 		m_data = nullptr;
 		m_short[m_size] = c;
 		m_short[m_size + 1] = '\0';
 		++m_size;
 	}
 	else {								// Heap
-		ensureCapacity(m_capacity);
+		ensureCapacity(len);
 		m_data[m_size] = c;
 		m_data[m_size+1] = '\0';
 		m_short[0] = '\0';
 		++m_capacity;
 		++m_size;
 	}
+	return *this;
 }
 
 String& String::operator+=(const String& s) noexcept {
-	throw std::runtime_error("not yet implemented");
+	int len = m_size + s.m_size + 1;
+	if (len < ShortCapacity - 1) {	// Stack
+		m_data = nullptr;
+		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
+			m_short[i] = s.m_short[j];
+		}
+		m_size += s.m_size;
+	}
+	else {								// Heap
+		ensureCapacity(len);
+		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
+			m_data[i] = s.m_data[j];
+		}
+		m_size += s.m_size;
+	}
+	return *this;
 }
 
 String String::operator+(char c) const noexcept {
-	throw std::runtime_error("not yet implemented");
+		return toCString() + c;
 }
 
 String String::operator+(const String& s) const noexcept {
@@ -221,7 +243,7 @@ void String::ensureCapacity(size_t capacity) {
 		m_short[0] = '\0';
 	}
 	else {										// Heap string to heap + ShortCapacity string
-		int multiplier = m_size / ShortCapacity;
+		int multiplier = capacity / ShortCapacity;
 		auto data = std::make_unique<char[]>((++multiplier) * ShortCapacity);
 		for (int i = 0; i < m_size; i++) {
 			data[i] = m_data[i];
