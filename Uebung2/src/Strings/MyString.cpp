@@ -173,7 +173,7 @@ String& String::operator=(String&& s) noexcept {
 }
 
 String& String::operator+=(char c) noexcept {
-	int len = m_size + 1;
+	size_t len = m_size + 1;
 	if (len < ShortCapacity - 1) {	// Stack
 		m_data = nullptr;
 		m_short[m_size] = c;
@@ -192,7 +192,7 @@ String& String::operator+=(char c) noexcept {
 }
 
 String& String::operator+=(const String& s) noexcept {
-	int len = m_size + s.m_size + 1;
+	size_t len = m_size + s.m_size + 1;
 	if (len < ShortCapacity - 1) {		// Stack
 		m_data = nullptr;
 		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
