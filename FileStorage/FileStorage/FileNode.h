@@ -75,11 +75,11 @@ private:
 		return std::get<std::map<Key, FileNode>>(m_data); 
 	}
 
-	const std::map<key, FileNode>& map() const {
+	const std::map<Key, FileNode>& map() const {
 		return std::get<std::map<Key, FileNode>>(m_data);
 	}
 
-	const std::map<key, FileNode>& map() const {
+	const std::string& text() const {
 		return std::get<std::string>(m_data);
 	}
 
@@ -100,10 +100,10 @@ private:
 			switch (m_is.peek()) {
 			case '{':		// innerer Knoten
 			{
-				auto [ it, inserted] = map().emplace(key, FileNode(m_is));
+				auto [it, inserted] = map().emplace(key, FileNode(m_is));
 				if (!inserted) throw std::runtime_error("key "s + key + " is already defined");
 				break;
-			}				
+			}
 			case '"':		// leaf node
 			{
 				std::string t;
@@ -115,7 +115,7 @@ private:
 				break;
 			}
 
-				
+
 			default:	// int einlesen
 			{
 				std::string t;
@@ -129,11 +129,10 @@ private:
 				if (!inserted) throw std::runtime_error("key "s + key + " is already defined");
 			}
 
-
 			}
 
 			m_is >> std::ws;
-			// 2 mehr zeilen ...
-		}
+			m_is >> delimiter;		
+		} // while close
 	}
 };

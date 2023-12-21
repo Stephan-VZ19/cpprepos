@@ -12,13 +12,14 @@ constexpr int indentWidth = 4;
 using Func = std::function<FileStorage&(FileStorage&)>;
 
 class FileStorage {
+	FileNode m_root;
 	std::ofstream m_ofs;		// File-Stream
 	std::ostream& m_os;			// Output-Stream
 	int m_indentLevel = 0;		// Anzahl Einrückungen
 	bool m_writing;				// Schreiben oder Lesen
 	bool m_keyExpected = true;	// nächste Ausgabe ist ein Schlüssel
 	bool m_firstkey = true;		// es ist der Schlüssel
-	std::iostream m_root;
+	
 
 public:
 	static constexpr bool Read = true;
@@ -89,13 +90,16 @@ public:
 		return *this;
 	}
 
-	FileStorage& opertator<<(int i) {
+	FileStorage& operator<<(int i) {
 		if (m_keyExpected) throw std::runtime_error("key expected");
-		// not completed ..
+		
+		m_os << i;
+		m_keyExpected = true;
+		return *this;
 	}
 
 	FileStorage& operator<<(Func f) {
-		return f.(*this);
+		return f(*this);
 	}
 
 private:
