@@ -56,7 +56,8 @@ public:
 		fs << "name" << p.m_name;
 		fs << "address" << p.m_address;
 		fs << "female" << p.m_female;
-		return fs << objectEnd;
+		fs << objectEnd;
+		return fs;
 	}
 
 	friend const FileNode& operator>>(const FileNode& fn, Person& p) {

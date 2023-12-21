@@ -5,7 +5,11 @@
 #include <functional>
 #include <stdexcept>
 
+#include "FileNode.h"
+
 constexpr int indentWidth = 4;
+
+using Func = std::function<FileStorage&(FileStorage&)>;
 
 class FileStorage {
 	std::ofstream m_ofs;		// File-Stream
@@ -14,6 +18,7 @@ class FileStorage {
 	bool m_writing;				// Schreiben oder Lesen
 	bool m_keyExpected = true;	// nächste Ausgabe ist ein Schlüssel
 	bool m_firstkey = true;		// es ist der Schlüssel
+	std::iostream m_root;
 
 public:
 	static constexpr bool Read = true;
@@ -23,13 +28,21 @@ public:
 	friend FileStorage& objectEnd(FileStorage&);
 
 	FileStorage(const std::string& fileName, bool reading)
-		: m_ofs(reading ? std::ofstream() : std::ofstream(fileName))
+		: m_root(fileName, reading)
+		, m_ofs(reading ? std::ofstream() : std::ofstream(fileName))
 		, m_os(m_ofs)
 		, m_writing(!reading)
-	{}
+	{
+		if (m_writing) objectBegin(*this);
+	}
 
 	FileStorage(std::ostream& os)
 		: m_os(os)
+		, m_writing(true)
+	{}
+
+	FileStorage(std::istream& is)
+		: m_root(is)
 		, m_writing(true)
 	{}
 
@@ -46,6 +59,10 @@ public:
 			m_ofs.close();
 			m_writing = false;
 		}
+	}
+
+	const FileNode& operator[](const Key& key) const {
+		return m_root[key];
 	}
 
 	FileStorage& operator<<(const std::string& s) {
@@ -75,6 +92,10 @@ public:
 	FileStorage& opertator<<(int i) {
 		if (m_keyExpected) throw std::runtime_error("key expected");
 		// not completed ..
+	}
+
+	FileStorage& operator<<(Func f) {
+		return f.(*this);
 	}
 
 private:

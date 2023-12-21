@@ -19,8 +19,23 @@ int main() {
 		fs2 << "hanspi" << hanspi;
 		fs2 << "moni" << moni;
 
+	} 
+	{
+		// test reading
+		FileStorage fs("fs.txt", FileStorage::Read);
+
+		auto& m = fs["moni"];
+		std::string name;
+		m["name"] >> name;
+		std::cout << name << std::endl;
+		Address a;
+		m["address"] >> a;
+
+		Person p;
+		fs["hanspi"] >> p;
 	}
 	catch (std::runtime_error& ex) {
 		std::cout << ex.what() << std::endl;
 	}
+
 }

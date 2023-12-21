@@ -130,6 +130,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileNode.h" />
     <ClInclude Include="FileStorage.h" />
     <ClInclude Include="Person.h" />
   </ItemGroup>
