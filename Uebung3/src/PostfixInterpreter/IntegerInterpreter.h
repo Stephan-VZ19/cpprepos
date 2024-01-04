@@ -5,6 +5,7 @@
 #include <stack>
 #include <exception>
 
+
 // Ihr Name
 
 namespace IntegerInterpreter {
@@ -20,6 +21,10 @@ namespace IntegerInterpreter {
         /// <returns>result</returns>
         int evaluate(const std::vector<std::string>& tokens) {
             // TODO: Aufgabe 1) Berechnen Sie den Wert des Ausdrucks
+            int len = tokens.size();
+        
+            if (len < 3) throw std::exception("Smaller than 3 tokens");
+
             return 0;
         }
     };
