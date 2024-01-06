@@ -6,7 +6,7 @@
 #include <exception>
 
 
-// Ihr Name
+// Stephan Baumann
 
 namespace IntegerInterpreter {
     class PostfixInterpreter {
@@ -21,11 +21,40 @@ namespace IntegerInterpreter {
         /// <returns>result</returns>
         int evaluate(const std::vector<std::string>& tokens) {
             // TODO: Aufgabe 1) Berechnen Sie den Wert des Ausdrucks
-            int len = tokens.size();
-        
-            if (len < 3) throw std::exception("Smaller than 3 tokens");
 
-            return 0;
+            int len = tokens.size();  
+            std::stack<std::string> stk;
+
+            for (int i = 0; i < len; ++i) {
+
+                if (tokens[i] != "+" || tokens[i] != "-" || tokens[i] != "*" || tokens[i] != "/") {
+                    stk.push(tokens[i]);
+                }
+                else {
+                    int rhs = std::stoi(stk.top());
+                    stk.pop();
+                    int lhs = std::stoi(stk.top());
+                    stk.pop();
+
+                    if (tokens[i] == "+") {
+                        stk.push(std::to_string(lhs + rhs));
+                    }
+                    else if (tokens[i] == "-") {
+                        stk.push(std::to_string(lhs - rhs));
+                    }
+                    else if (tokens[i] == "*") {
+                        stk.push(std::to_string(lhs * rhs));
+                    }
+                    else if (tokens[i] == "/") {
+                        stk.push(std::to_string(lhs / rhs));
+                    }
+                    else {
+                        throw std::exception("Wrong operator token");
+                    }                  
+                }
+            }
+            // if (stk.size() > 1) throw std::exception("Format error");
+            return std::stoi(stk.top());
         }
     };
 }
