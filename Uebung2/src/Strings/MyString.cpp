@@ -53,16 +53,24 @@ String::String(String&& s) noexcept
 }
 
 String::String(const char s[])
-	: m_size(sizeof(s))
+	: m_size(0)
 	, m_capacity(ShortCapacity)
 	, m_data(nullptr)
 {
+	int i = 0;
+	while (s[i] != '\0') {		// find length of C-String
+		++m_size;
+		++i;
+	}
+	++m_size;					// plus 0 termination
 	if (m_size < ShortCapacity) {		// Stack
-		int i = 0;
-		while (s[i] != '\0') {
-			m_short[i] = s[i];
-			++i;
+		int j = 0;
+		while (s[j] != '\0') {
+			m_short[j] = s[j];
+			++j;
 		}
+		++j;
+		m_short[j] = s[j];		// plus 0 termination
 	}
 	else {								// Heap
 		ensureCapacity(m_size);
