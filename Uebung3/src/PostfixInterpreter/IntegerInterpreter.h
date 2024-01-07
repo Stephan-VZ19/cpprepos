@@ -27,7 +27,7 @@ namespace IntegerInterpreter {
 
             for (int i = 0; i < len; ++i) {
 
-                if (tokens[i] != "+" || tokens[i] != "-" || tokens[i] != "*" || tokens[i] != "/") {
+                if (tokens[i] != "+" && tokens[i] != "-" && tokens[i] != "*" && tokens[i] != "/") {
                     stk.push(tokens[i]);
                 }
                 else {
@@ -53,7 +53,7 @@ namespace IntegerInterpreter {
                     }                  
                 }
             }
-            // if (stk.size() > 1) throw std::exception("Format error");
+            if (stk.size() > 1) throw std::exception("Format error");
             return std::stoi(stk.top());
         }
     };
