@@ -17,6 +17,11 @@ namespace GenericInterpreter {
 
     // TODO: Aufgabe 2a) Deklarieren Sie hier alle spezialisierten Implementationen von convertString()
 
+    template<>
+    int convertString<int>(const std::string& s) {
+        return std::stoi(s);
+    }
+
     // TODO: Aufgabe 2c) & 3b) Deklariere Sie hier alle Concepts
 
     // TODO: Aufgabe 3c) Deklariere Sie hier den Funktor increment
