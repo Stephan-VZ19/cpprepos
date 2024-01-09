@@ -54,8 +54,6 @@ String::String(String&& s) noexcept
 
 String::String(const char s[])
 	: m_size(0)
-	, m_capacity(ShortCapacity)
-	, m_data(nullptr)
 {
 	int i = 0;
 	while (s[i] != '\0') {		// find length of C-String
@@ -63,23 +61,7 @@ String::String(const char s[])
 		++i;
 	}
 	++m_size;					// plus 0 termination
-	if (m_size < ShortCapacity) {		// Stack
-		int j = 0;
-		while (s[j] != '\0') {
-			m_short[j] = s[j];
-			++j;
-		}
-		++j;
-		m_short[j] = s[j];		// plus 0 termination
-	}
-	else {								// Heap
-		ensureCapacity(m_size);
-		m_capacity = m_size + 1;
-		m_data = std::make_unique<char[]>(m_size);
-		for (int i = 0; i < m_size; i++) {
-			m_data[i] = m_data[i];
-		}
-	}
+	*this = String(s, m_size);
 }
 
 String::String(const char s[], size_t len) 
@@ -95,7 +77,6 @@ String::String(const char s[], size_t len)
 		}
 	}
 	else {								// Heap
-		ensureCapacity(len);
 		m_capacity = m_size + 1;
 		m_data = std::make_unique<char[]>(m_size);
 		for (int i = 0; i < len; i++) {
@@ -348,8 +329,9 @@ void String::ensureCapacity(size_t capacity) {
 	}
 	else {										// Heap string to heap + ShortCapacity string
 		int multiplier = capacity / ShortCapacity;
-		auto data = std::make_unique<char[]>((++multiplier) * ShortCapacity);
-		for (int i = 0; i < m_size; i++) {
+		int len = (++multiplier) * ShortCapacity;
+		auto data = std::make_unique<char[]>(len);
+		for (int i = 0; i < len; i++) {
 			data[i] = m_data[i];
 		}
 		m_data = move(data);
