@@ -20,7 +20,7 @@ String::String(const String& s) noexcept
 {
 	if (s.m_size + 1 < ShortCapacity) {		// Stack
 		m_data = nullptr;
-		for (int i = 0; i < s.m_size + 1; i++) {	// +1 for 0 Termination
+		for (int i = 0; i < s.m_size + 1; i++) {	// +1 for 0 termination
 			m_short[i] = s.m_short[i];
 		}
 	}
@@ -52,23 +52,38 @@ String::String(String&& s) noexcept
 
 String::String(const char s[])
 	: m_size(0)
-	, m_data(nullptr)
 	, m_capacity(0)
 {
-	int i = 0;
-	while (s[i] != '\0') {		// find length of C-String
-		++m_size;
-		++i;
+	if (nullptr == s) {
+		throw std::invalid_argument("String is nullptr");
 	}
-	++m_size;					// plus 0 termination
-	*this = String(s, m_size);
+	int len = 0;
+	while (s[len] != '\0') {		// find length of C-String without 0 termination
+		++m_size;
+		++len;
+	}
+	++len;							// 0 termination
+	if (len < ShortCapacity) {
+		m_data = nullptr;
+		for (int i = 0; i < len; i++) {
+			m_short[i] = s[i];
+		}
+	}
+	else {
+		m_short[0] = '\0';
+		m_data = std::make_unique<char[]>(len);
+		for (int i = 0; i < len; i++) {
+			m_data[i] = m_data[i];
+			++m_capacity;
+		}
+	}
 }
 
 String::String(const char s[], size_t len) 
 	: m_size(len)
 {
 	if (nullptr == s) {
-		throw std::invalid_argument("Sting is nullptr");
+		throw std::invalid_argument("String is nullptr");
 	}
 	if (m_size < ShortCapacity) {		// Stack
 		m_data = nullptr;
@@ -83,8 +98,8 @@ String::String(const char s[], size_t len)
 	else {								// Heap
 		m_short[0] = '\0';
 		m_capacity = len;
-		m_data = std::make_unique<char[]>(len);
-		for (int i = 0; i < len; i++) {
+		m_data = std::make_unique<char[]>(len + 1);
+		for (int i = 0; i < len + 1; i++) {
 			m_data[i] = m_data[i];
 		}
 	}
