@@ -18,8 +18,23 @@ namespace GenericInterpreter {
     // TODO: Aufgabe 2a) Deklarieren Sie hier alle spezialisierten Implementationen von convertString()
 
     template<>
-    int convertString<int>(const std::string& s) {
+    inline int convertString<int>(const std::string& s) {
         return std::stoi(s);
+    }
+
+    template<>
+    inline long long convertString<long long>(const std::string& s) {
+        return std::stoll(s);
+    }
+
+    template<>
+    inline double convertString<double>(const std::string& s) {
+        return std::stod(s);
+    }
+
+    template<>
+    inline float convertString<float>(const std::string& s) {
+        return std::stof(s);
     }
 
     // TODO: Aufgabe 2c) & 3b) Deklariere Sie hier alle Concepts
