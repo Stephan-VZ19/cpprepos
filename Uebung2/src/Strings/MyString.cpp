@@ -47,7 +47,10 @@ String::String(String&& s) noexcept
 		m_short[0] = '\0';
 		m_data = std::move(s.m_data);
 	}
-	
+	s.m_size = 0;
+	s.m_capacity = ShortCapacity;
+	s.m_data = nullptr;
+	s.m_short[0] = '\0';
 }
 
 String::String(const char s[])
@@ -181,6 +184,10 @@ String& String::operator=(String&& s) noexcept {
 		m_short[0] = '\0';
 		m_data = std::move(s.m_data);
 	}
+	s.m_size = 0;
+	s.m_capacity = ShortCapacity;
+	s.m_data = nullptr;
+	s.m_short[0] = '\0';
 	return *this;
 }
 
