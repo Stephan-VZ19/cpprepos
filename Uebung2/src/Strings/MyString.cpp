@@ -52,7 +52,7 @@ String::String(String&& s) noexcept
 
 String::String(const char s[])
 	: m_size(0)
-	, m_capacity(0)
+	, m_capacity(ShortCapacity)
 {
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
@@ -71,6 +71,7 @@ String::String(const char s[])
 	}
 	else {
 		m_short[0] = '\0';
+		m_capacity = 0;
 		m_data = std::make_unique<char[]>(len);
 		for (int i = 0; i < len; i++) {
 			m_data[i] = m_data[i];
@@ -82,24 +83,24 @@ String::String(const char s[])
 String::String(const char s[], size_t len) 
 	: m_size(len)
 {
+	++len;
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
 	}
-	if (m_size < ShortCapacity) {		// Stack
+	if (len < ShortCapacity) {
 		m_data = nullptr;
-		m_capacity = 0;
+		m_capacity = ShortCapacity;
 		int i = 0;
 		while (i < len) {
 			m_short[i] = s[i];
 			++i;
 		}
-
 	}
-	else {								// Heap
+	else {
 		m_short[0] = '\0';
 		m_capacity = len;
-		m_data = std::make_unique<char[]>(len + 1);
-		for (int i = 0; i < len + 1; i++) {
+		m_data = std::make_unique<char[]>(len);
+		for (int i = 0; i < len; i++) {
 			m_data[i] = m_data[i];
 		}
 	}
