@@ -18,18 +18,18 @@ String::String(const String& s) noexcept
 	: m_size(s.m_size)
 	, m_capacity(s.m_capacity)
 {
-	if (s.m_size < ShortCapacity) {		// Stack
+	if (s.m_size + 1 < ShortCapacity) {		// Stack
 		m_data = nullptr;
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_size + 1; i++) {	// +1 for 0 Termination
 			m_short[i] = s.m_short[i];
 		}
 	}
 	else {								// Heap
+		m_short[0] = '\0';
 		m_data = std::make_unique<char[]>(s.m_capacity);
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_size + 1; i++) {
 			m_data[i] = s.m_data[i];
 		}
-		m_short[0] = '\0';
 	}
 }
 
@@ -39,21 +39,21 @@ String::String(String&& s) noexcept
 {
 	if (s.m_size < ShortCapacity) {
 		m_data = nullptr;
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_size + 1; i++) {
 			m_short[i] = s.m_short[i];
 		}
 	}
 	else {
+		m_short[0] = '\0';
 		m_data = std::move(s.m_data);
 	}
-	s.m_size = 0;
-	s.m_capacity = ShortCapacity;
-	s.m_data = nullptr;
-	m_short[0] = '\0';
+	
 }
 
 String::String(const char s[])
 	: m_size(0)
+	, m_data(nullptr)
+	, m_capacity(0)
 {
 	int i = 0;
 	while (s[i] != '\0') {		// find length of C-String
@@ -66,23 +66,27 @@ String::String(const char s[])
 
 String::String(const char s[], size_t len) 
 	: m_size(len)
-	, m_capacity(ShortCapacity)
-	, m_data(nullptr)
 {
+	if (nullptr == s) {
+		throw std::invalid_argument("Sting is nullptr");
+	}
 	if (m_size < ShortCapacity) {		// Stack
+		m_data = nullptr;
+		m_capacity = 0;
 		int i = 0;
-		while (i < len && s[i] != '\0') {
+		while (i < len) {
 			m_short[i] = s[i];
 			++i;
 		}
+
 	}
 	else {								// Heap
-		m_capacity = m_size + 1;
-		m_data = std::make_unique<char[]>(m_size);
+		m_short[0] = '\0';
+		m_capacity = len;
+		m_data = std::make_unique<char[]>(len);
 		for (int i = 0; i < len; i++) {
 			m_data[i] = m_data[i];
 		}
-		m_short[0] = '\0';
 	}
 }
 
@@ -124,9 +128,12 @@ const char* String::toCString() const noexcept {
 }
 
 String& String::operator=(const String& s) noexcept {
+	if (*this == s) {
+		return *this;
+	}
 	m_size = s.m_size;
 	m_capacity = s.m_capacity;
-	if (m_size < ShortCapacity) {		// Stack
+	if (s.m_size < ShortCapacity) {		// Stack
 		m_data = nullptr;
 		for (int i = 0; i < s.m_size; i++) {
 			m_short[i] = s.m_short[i];
