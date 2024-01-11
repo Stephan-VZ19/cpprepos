@@ -192,22 +192,10 @@ String& String::operator=(String&& s) noexcept {
 }
 
 String& String::operator+=(char c) noexcept {
-	size_t len = m_size + 1;
-	if (len < ShortCapacity - 1) {	// Stack
-		m_data = nullptr;
-		m_short[len] = c;
-		m_short[len + 1] = '\0';
-		++m_capacity;
-		++m_size;
-	}
-	else {								// Heap
-		ensureCapacity(len);
-		m_data[len] = c;
-		m_data[len+1] = '\0';
-		m_short[0] = '\0';
-		++m_capacity;
-		++m_size;
-	}
+	size_t capacity = m_size + 2;
+	ensureCapacity(capacity);
+	(*this)[m_size++] = c;
+	(*this)[m_size] = '\0';
 	return *this;
 }
 
@@ -244,7 +232,7 @@ char String::operator[](size_t i) const {
 	if (i > m_size) {
 		throw std::out_of_range("out of range");
 	}
-	if (m_size < ShortCapacity) {
+	if (nullptr == m_data) {
 		return m_short[i];
 	}
 	else {
@@ -256,7 +244,7 @@ char& String::operator[](size_t i) {
 	if (i > m_size) {
 		throw std::out_of_range("out of range");
 	}
-	if (m_size < ShortCapacity) {
+	if (nullptr == m_data) {
 		return m_short[i];
 	}
 	else {
