@@ -86,7 +86,7 @@ String::String(const char s[])
 String::String(const char s[], size_t len) 
 	: m_size(len)
 {
-	++len;
+	++len;							// 0 termination
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
 	}
@@ -98,6 +98,7 @@ String::String(const char s[], size_t len)
 			m_short[i] = s[i];
 			++i;
 		}
+		m_short[i] = '\0';
 	}
 	else {
 		m_short[0] = '\0';
@@ -106,6 +107,7 @@ String::String(const char s[], size_t len)
 		for (int i = 0; i < len; i++) {
 			m_data[i] = m_data[i];
 		}
+		m_data[m_size] = '\0';
 	}
 }
 
@@ -337,7 +339,7 @@ void String::ensureCapacity(size_t capacity) {
 	}
 	else {								
 		auto data = std::make_unique<char[]>(capacity);
-		for (int i = 0; i < capacity; i++) {
+		for (int i = 0; i < m_capacity; i++) {
 			data[i] = m_data[i];
 		}
 		m_data = move(data);
