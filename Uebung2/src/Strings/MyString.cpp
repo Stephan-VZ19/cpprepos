@@ -55,57 +55,45 @@ String::String(String&& s) noexcept
 
 String::String(const char s[])
 	: m_size(0)
-	, m_capacity(ShortCapacity)
 {
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
 	}
-	int len = 0;
-	while (s[len] != '\0') {		// find length of C-String without 0 termination
+	int i = 0;
+	while (s[i] != '\0') {
 		++m_size;
-		++len;
+		++i;
 	}
-	++len;							// 0 termination
-	if (len < ShortCapacity) {
-		m_data = nullptr;
-		for (int i = 0; i < len; i++) {
-			m_short[i] = s[i];
-		}
-	}
-	else {
-		m_short[0] = '\0';
-		m_capacity = 0;
-		m_data = std::make_unique<char[]>(len);
-		for (int i = 0; i < len; i++) {
-			m_data[i] = m_data[i];
-			++m_capacity;
-		}
-	}
+	*this = std::move(String(s, m_size));
 }
 
 String::String(const char s[], size_t len) 
 	: m_size(len)
 {
-	++len;
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
 	}
-	if (len < ShortCapacity) {
+	int cap = ++len;
+	if (cap < ShortCapacity) {
 		m_data = nullptr;
 		m_capacity = ShortCapacity;
 		int i = 0;
-		while (i < len) {
+		while (i < cap) {
 			m_short[i] = s[i];
 			++i;
 		}
+		m_short[i] = '\0';
 	}
 	else {
 		m_short[0] = '\0';
-		m_capacity = len;
-		m_data = std::make_unique<char[]>(len);
-		for (int i = 0; i < len; i++) {
-			m_data[i] = m_data[i];
+		m_capacity = cap;
+		m_data = std::make_unique<char[]>(cap);
+		int i = 0;
+		while (i < cap) {
+			m_data[i] = s[i];
+			++i;
 		}
+		m_data[i] = '\0';
 	}
 }
 
@@ -335,12 +323,18 @@ void String::ensureCapacity(size_t capacity) {
 	if (capacity <= m_capacity) {
 		return;
 	}
+	if (m_capacity <= ShortCapacity) {
+		m_data = std::make_unique<char[]>(capacity);
+		for (int i = 0; i <= m_size; ++i) {
+			m_data[i] = m_short[i];
+		}
+	}
 	else {								
 		auto data = std::make_unique<char[]>(capacity);
-		for (int i = 0; i < capacity; i++) {
+		for (int i = 0; i <= capacity; ++i) {
 			data[i] = m_data[i];
-		}
-		m_data = move(data);
+			m_data = move(data);
+		}	
 		m_short[0] = '\0';
 		m_capacity = capacity;
 	}
