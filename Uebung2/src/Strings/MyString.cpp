@@ -221,7 +221,9 @@ String& String::operator+=(const String& s) noexcept {
 }
 
 String String::operator+(char c) const noexcept {
-	return String(toCString() + c);
+	String str = toCString();
+	str += c;
+	return str;
 }
 
 String String::operator+(const String& s) const noexcept {
