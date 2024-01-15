@@ -105,7 +105,7 @@ public:
 	/// </summary>
 	/// <param name="i">character position</param>
 	constexpr const char operator[](size_t i) const {
-		if (i < 0 || m_size < i) {
+		if (i < 0 || i >= m_size) {
 			throw std::out_of_range("out of range");
 		}
 		return m_data[i];
