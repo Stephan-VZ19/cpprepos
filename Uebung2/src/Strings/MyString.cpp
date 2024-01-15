@@ -203,17 +203,20 @@ String& String::operator+=(char c) noexcept {
 
 String& String::operator+=(const String& s) noexcept {
 	size_t len = m_size + s.m_size + 1;
-	if (len < ShortCapacity) {		// Stack
+	ensureCapacity(len);
+	if (nullptr == m_data) {		// Stack
 		m_data = nullptr;
-		for (int i = m_size - 1, j = 0; i < s.m_size + 1; i++, j++) {
+		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
 			m_short[i] = s.m_short[j];
-		}	
+		}
+		m_short[len-1] = '\0';
 	}
-	else {								// Heap
-		ensureCapacity(len);
+	else {							// Heap
+		m_short[0] = '\0';
 		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
 			m_data[i] = s.m_data[j];
 		}
+		m_data[len - 1] = '\0';
 	}
 	m_size = len - 1;
 	m_capacity = len;
@@ -221,7 +224,7 @@ String& String::operator+=(const String& s) noexcept {
 }
 
 String String::operator+(char c) const noexcept {
-	String str = toCString();
+	String str = *this;
 	str += c;
 	return str;
 }
