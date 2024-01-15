@@ -31,11 +31,12 @@ public:
 	/// <param name="s">zero terminated C-String</param>
 	constexpr StringView(const char* s)
 		: m_data(s)
-		, m_size(strLen(s))
+		, m_size(0)
 	{
 		if (nullptr == s) {
 			throw std::invalid_argument("invalid string literal");
 		}
+		m_size = strLen(s);
 	}
 	
 	/// <summary>
@@ -48,7 +49,7 @@ public:
 		, m_size(len)
 	{
 		if (nullptr == s) {
-			throw new std::invalid_argument("invalid string literal");
+			throw std::invalid_argument("invalid string literal");
 		}
 	}
 
