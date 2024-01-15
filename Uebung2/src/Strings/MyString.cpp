@@ -140,7 +140,7 @@ String String::substring(size_t beg, size_t end) const {
 }
 
 const char* String::toCString() const noexcept {
-	if (m_size < ShortCapacity) {		// Stack
+	if (nullptr == m_data) {			// Stack
 		return m_short;
 	}
 	else {								// Heap
@@ -152,21 +152,21 @@ String& String::operator=(const String& s) noexcept {
 	if (*this == s) {
 		return *this;
 	}
-	m_size = s.m_size;
-	m_capacity = s.m_capacity;
-	if (s.m_size < ShortCapacity) {		// Stack
+	if (nullptr == s.m_data) {			// Stack
 		m_data = nullptr;
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_capacity; i++) {
 			m_short[i] = s.m_short[i];
 		}
 	}
 	else {								// Heap
 		m_short[0] = '\0';
 		m_data = std::make_unique<char[]>(s.m_capacity);
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_capacity; i++) {
 			m_data[i] = s.m_data[i];
 		}		
 	}
+	m_size = s.m_size;
+	m_capacity = s.m_capacity;
 	return *this;
 }
 
@@ -174,11 +174,9 @@ String& String::operator=(String&& s) noexcept {
 	if (*this == s) {
 		return *this;
 	}
-	m_size = s.m_size;
-	m_capacity = s.m_capacity;
-	if (m_size < ShortCapacity) {		// Stack
+	if (nullptr == s.m_data) {		// Stack
 		m_data = nullptr;
-		for (int i = 0; i < s.m_size; i++) {
+		for (int i = 0; i < s.m_capacity; i++) {
 			m_short[i] = s.m_short[i];
 		}
 	}
@@ -186,6 +184,8 @@ String& String::operator=(String&& s) noexcept {
 		m_short[0] = '\0';
 		m_data = std::move(s.m_data);
 	}
+	m_size = s.m_size;
+	m_capacity = s.m_capacity;
 	s.m_size = 0;
 	s.m_capacity = ShortCapacity;
 	s.m_data = nullptr;
@@ -224,8 +224,20 @@ String& String::operator+=(const String& s) noexcept {
 }
 
 String String::operator+(char c) const noexcept {
-	String str = *this;
-	str += c;
+	String str = String(toCString());
+	str.ensureCapacity(str.m_capacity + 1);
+	if (nullptr == str.m_data) {
+		str.m_short[str.m_size] = c;
+		++str.m_size;
+		str.m_short[str.m_size] = '\0';
+		++str.m_capacity;
+	}
+	else {
+		str.m_data[str.m_size] = c;
+		++str.m_size;
+		str.m_data[str.m_size] = '\0';
+		++str.m_capacity;
+	}
 	return str;
 }
 
@@ -342,13 +354,19 @@ void String::ensureCapacity(size_t capacity) {
 	if (capacity <= m_capacity) {
 		return;
 	}
-	else {								
-		auto data = std::make_unique<char[]>(capacity);
-		for (int i = 0; i < m_capacity; i++) {
+	auto data = std::make_unique<char[]>(capacity);
+	if (nullptr == m_data) {
+		for (int i = 0; i < m_size; i++) {
+			data[i] = m_short[i];
+		}		
+	}
+	else {										
+		for (int i = 0; i < m_size; i++) {
 			data[i] = m_data[i];
 		}
-		m_data = move(data);
-		m_short[0] = '\0';
-		m_capacity = capacity;
 	}
+	data[m_size] = '\0';
+	m_data = std::move(data);
+	m_short[0] = '\0';
+	m_capacity = capacity;
 }
