@@ -274,7 +274,7 @@ std::strong_ordering String::operator<=>(const String& s) const noexcept {
 		if (str[i] < s_str[i]) {
 			return std::strong_ordering::less;
 		}
-		else if (str[i] && s_str[i]) {
+		else if (str[i] > s_str[i]) {
 			return std::strong_ordering::greater;
 		}
 		else {
