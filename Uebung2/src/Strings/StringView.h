@@ -130,14 +130,14 @@ public:
 				++i;		// same character
 			}
 		}
-		if (m_size == s.m_size) {
-			return std::strong_ordering::equal;		// same characters and same length
+		if (m_size < s.m_size) {
+			return std::strong_ordering::less;			// same characters and same length
 		}
-		else if (m_size < s.m_size) {
-			return std::strong_ordering::greater;	// same characters *this is shorter
+		else if (m_size > s.m_size) {
+			return std::strong_ordering::greater;		// same characters *this is shorter
 		}
 		else {
-			return std::strong_ordering::less;		// same characters s is shorter
+			return std::strong_ordering::equal;			// same characters s is shorter
 		}
 	}
 
