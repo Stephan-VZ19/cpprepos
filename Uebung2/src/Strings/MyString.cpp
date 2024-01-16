@@ -177,7 +177,7 @@ String& String::operator=(String&& s) noexcept {
 			m_short[i] = s.m_short[i];
 		}
 	}
-	else {								// Heap
+	else {							// Heap
 		m_short[0] = '\0';
 		m_data = std::move(s.m_data);
 	}
@@ -199,24 +199,22 @@ String& String::operator+=(char c) noexcept {
 }
 
 String& String::operator+=(const String& s) noexcept {
-	size_t len = m_size + s.m_size + 1;
-	ensureCapacity(len);
+	size_t capacity = m_size + s.m_size + 1;
+	ensureCapacity(capacity);
 	if (nullptr == m_data) {		// Stack
 		m_data = nullptr;
-		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
-			m_short[i] = s.m_short[j];
+		for (int i = m_size, j = 0; i < capacity; i++, j++) {
+			m_short[i] = s[j];
 		}
-		m_short[len-1] = '\0';
 	}
 	else {							// Heap
 		m_short[0] = '\0';
-		for (int i = m_size - 1, j = 0; i < len; i++, j++) {
-			m_data[i] = s.m_data[j];
+		for (int i = m_size, j = 0; i < capacity; i++, j++) {
+			m_data[i] = s[j];
 		}
-		m_data[len - 1] = '\0';
 	}
-	m_size = len - 1;
-	m_capacity = len;
+	m_size = capacity - 1;
+	m_capacity = capacity;
 	return *this;
 }
 
