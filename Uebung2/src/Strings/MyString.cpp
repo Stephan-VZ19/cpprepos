@@ -18,7 +18,7 @@ String::String(const String& s) noexcept
 	: m_size(s.m_size)
 	, m_capacity(s.m_capacity)
 {
-	if (s.m_size + 1 < ShortCapacity) {		// Stack
+	if (s.m_size < ShortCapacity) {		// Stack
 		m_data = nullptr;
 		for (int i = 0; i < s.m_size + 1; i++) {	// +1 for 0 termination
 			m_short[i] = s.m_short[i];
@@ -66,7 +66,7 @@ String::String(const char s[])
 		++len;
 	}
 	++len;							// 0 termination
-	if (len < ShortCapacity) {
+	if (len <= ShortCapacity) {
 		m_data = nullptr;
 		for (int i = 0; i < len; i++) {
 			m_short[i] = s[i];
@@ -77,7 +77,7 @@ String::String(const char s[])
 		m_capacity = 0;
 		m_data = std::make_unique<char[]>(len);
 		for (int i = 0; i < len; i++) {
-			m_data[i] = m_data[i];
+			m_data[i] = s[i];
 			++m_capacity;
 		}
 	}
@@ -86,26 +86,23 @@ String::String(const char s[])
 String::String(const char s[], size_t len) 
 	: m_size(len)
 {
-	++len;							// 0 termination
 	if (nullptr == s) {
 		throw std::invalid_argument("String is nullptr");
 	}
 	if (len < ShortCapacity) {
 		m_data = nullptr;
 		m_capacity = ShortCapacity;
-		int i = 0;
-		while (i < len) {
+		for (int i = 0; i < len; i++) {
 			m_short[i] = s[i];
-			++i;
 		}
-		m_short[i] = '\0';
+		m_short[m_size] = '\0';
 	}
 	else {
 		m_short[0] = '\0';
-		m_capacity = len;
-		m_data = std::make_unique<char[]>(len);
+		m_capacity = len + 1;
+		m_data = std::make_unique<char[]>(m_capacity);
 		for (int i = 0; i < len; i++) {
-			m_data[i] = m_data[i];
+			m_data[i] = s[i];
 		}
 		m_data[m_size] = '\0';
 	}
