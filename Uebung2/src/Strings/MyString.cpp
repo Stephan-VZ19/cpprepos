@@ -267,81 +267,28 @@ char& String::operator[](size_t i) {
 }
 
 std::strong_ordering String::operator<=>(const String& s) const noexcept {
-	if (m_size < ShortCapacity && s.m_size < ShortCapacity) {
-		int i = 0;
-		while (i < m_size && i < s.m_size) {
-			if (m_short[i] < s.m_short[i]) {
-				return std::strong_ordering::less;
-			}
-			else if (m_short[i] > s.m_short[i]) {
-				return std::strong_ordering::greater;
-			}
-			else {
-				++i;		// same character
-			}	
+	const char* str = toCString();
+	const char* s_str = s.toCString();
+	int i = 0;
+	while (i < m_size && i < s.m_size) {
+		if (str[i] < s_str[i]) {
+			return std::strong_ordering::less;
 		}
-		if (m_size == s.m_size) {
-			return std::strong_ordering::equal;		// same character and same length
-		}
-		else if (m_size < s.m_size) {
-			return std::strong_ordering::greater;	// same character *this is shorter
-		}
-		else {
-			return std::strong_ordering::less;		// same character s is shorter
-		}
-	}
-	else if (m_size < ShortCapacity) {
-		int i = 0;
-		while (i < m_size) {
-			if (m_short[i] < s.m_data[i]) {
-				return std::strong_ordering::less;
-			}
-			else if (m_short[i] > s.m_data[i]) {
-				return std::strong_ordering::greater;
-			}
-			else {
-				++i;
-			}
-		}
-		return std::strong_ordering::greater;		// *this is shorter
-	}
-	else if (s.m_size < ShortCapacity) {
-		int i = 0;
-		while (i < s.m_size) {
-			if (m_data[i] < s.m_short[i]) {
-				return std::strong_ordering::less;
-			}
-			else if (m_data[i] > s.m_short[i]) {
-				return std::strong_ordering::greater;
-			}
-			else {
-				++i;
-			}
-		}
-		return std::strong_ordering::greater;		// s is shorter
-	}
-	else {
-		int i = 0;
-		while (i < m_size && i < s.m_size) {
-			if (m_data[i] < s.m_data[i]) {
-				return std::strong_ordering::less;
-			}
-			else if (m_data[i] > s.m_data[i]) {
-				return std::strong_ordering::greater;
-			}
-			else {
-				++i;
-			}
-		}
-		if (m_size == s.m_size) {
-			return std::strong_ordering::equal;
-		}
-		else if (m_size < s.m_size) {
+		else if (str[i] && s_str[i]) {
 			return std::strong_ordering::greater;
 		}
 		else {
-			return std::strong_ordering::less;
+			++i;
 		}
+	}
+	if (m_size < s.m_size) {
+		return std::strong_ordering::less;
+	}
+	else if (m_size > s.m_size) {
+		return std::strong_ordering::greater;
+	}
+	else {
+		return std::strong_ordering::equal;
 	}
 }
 
