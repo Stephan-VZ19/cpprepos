@@ -70,6 +70,13 @@ namespace GenericInterpreter {
 
         // TODO: Aufgabe 3a) Definieren Sie hier die Hilfsmethode apply()
 
+        template<typename T>
+        struct apply {
+            constexpr T operator()(const T& a, const T& b) const {
+                // ?
+            }
+        };
+
     public:
         /// <summary>
         /// Postfix interpretation of arithmetic expressions.
