@@ -6,7 +6,7 @@
 #include <functional>
 #include <exception>
 
-// Ihr Name
+// Stephan Baumann
 
 namespace GenericInterpreter {
     template<typename T>
