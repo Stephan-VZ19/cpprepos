@@ -39,9 +39,32 @@ namespace GenericInterpreter {
 
     // TODO: Aufgabe 2c) & 3b) Deklariere Sie hier alle Concepts
 
+    template<typename T>
+    concept Addable = requires(T a, T b) {
+        a + b;
+    };
+
+    template<typename T>
+    concept Subtractable = requires(T a, T b) {
+        a - b;
+    };
+
+    template<typename T>
+    concept Multiplyable = requires(T a, T b) {
+        a * b;
+    };
+
+    template<typename T>
+    concept Divideable = requires(T a, T b) {
+        a / b;
+    };
+
+    template<typename T>
+    concept Computable = (Addable<T> && Subtractable<T> && Multiplyable<T> && Divideable<T>);
+
     // TODO: Aufgabe 3c) Deklariere Sie hier den Funktor increment
 
-    template <typename T>
+    template <Computable T>
     class PostfixInterpreter {
         // TODO: Aufgabe 2b) Definieren Sie hier die notwendige Datenstruktur
 
