@@ -22,7 +22,7 @@ namespace IntegerInterpreter {
         int evaluate(const std::vector<std::string>& tokens) {
             // TODO: Aufgabe 1) Berechnen Sie den Wert des Ausdrucks
 
-            int len = tokens.size();  
+            size_t len = tokens.size();  
             std::stack<std::string> stk;
 
             for (int i = 0; i < len; ++i) {

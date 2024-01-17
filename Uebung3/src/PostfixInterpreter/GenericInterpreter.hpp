@@ -56,7 +56,43 @@ namespace GenericInterpreter {
         /// <returns>result</returns>
         T evaluate(const std::vector<std::string>& tokens) {
             // TODO: Aufgabe 2b) Berechnen Sie den Wert des Ausdrucks
-            return T();
+
+            int len = tokens.size();
+            std::stack<std::string> stk;
+
+            for (int i = 0; i < len; ++i) {
+
+                if (tokens[i] != "*" && tokens[i] != "/" && tokens[i] != "+" && tokens[i] != "-") {
+                    stk.push(tokens[i]);
+                }
+                else {
+                    auto rhs = convertString<T>(stk.top());
+                    stk.pop();
+                    auto lhs = convertString<T>(stk.top());
+                    stk.pop();
+
+                    if (tokens[i] == "+") {
+                        stk.push(std::to_string(lhs + rhs));
+                    }
+                    else if (tokens[i] == "-") {
+                        stk.push(std::to_string(lhs - rhs));
+                    }
+                    else if (tokens[i] == "*") {
+                        stk.push(std::to_string(lhs * rhs));
+                    }
+                    else if (tokens[i] == "/") {
+                        stk.push(std::to_string(lhs / rhs));
+                    }
+                    else {
+                        throw std::exception("Wrong operator token");
+                    }
+                }
+
+            }
+            if (stk.size() > 1) {
+                throw std::exception("Format error");
+            }
+            return convertString<T>(stk.top());
         }
     };
 }
