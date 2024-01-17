@@ -22,22 +22,21 @@ class FileNode {
 	std::variant<std::map<Key, FileNode>, std::string> m_data;
 
 public:
-
-
 	const FileNode& operator[](const Key& key) const {
 		return map().at(key);
 	}
 
-	const FileNode& opeator>>(std::string& s) const {
+	const FileNode& operator>>(std::string& s) const {
 		s = text();
+		return *this;
 	}
 
-	const FileNode& opeator>>(int& i) const {
+	const FileNode& operator>>(int& i) const {
 		i = stoi(text());
 		return *this;
 	}
 
-	const FileNode& opeator>>(bool& b) const {
+	const FileNode& operator>>(bool& b) const {
 		b = stoi(text());
 		return *this;
 	}
@@ -89,7 +88,7 @@ private:
 		m_is >> std::ws;
 		m_is >> delimiter;
 
-		while (delimiter != '{') {
+		while (delimiter != '}') {
 			Key key;
 
 			m_is >> key;		// formattiertes Einlesen funktioniert bis kein Leerzeichen (Whitespaces, wie Newline, tab, ..) mehr kommt, und auch der :
@@ -114,12 +113,9 @@ private:
 				if (!inserted) throw std::runtime_error("key "s + key + " is already defined");
 				break;
 			}
-
-
 			default:	// int einlesen
-			{
+			
 				std::string t;
-
 				m_is >> t;
 				if (t.back() == ',') {
 					t.erase(t.size() - 1, 1);
@@ -127,12 +123,11 @@ private:
 				}
 				auto [it, inserted] = map().emplace(key, FileNode(m_is, t));
 				if (!inserted) throw std::runtime_error("key "s + key + " is already defined");
-			}
 
 			}
 
 			m_is >> std::ws;
-			m_is >> delimiter;		
-		} // while close
+			m_is >> delimiter;
+		}
 	}
 };

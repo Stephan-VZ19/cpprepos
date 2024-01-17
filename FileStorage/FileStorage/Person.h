@@ -38,12 +38,10 @@ public:
 class Person {
 	std::string m_name;
 	Address m_address;
-	bool m_female;
+	bool m_female = false;
 
 public:
-	Person()
-		: m_female(false)
-	{}
+	Person() = default;
 
 	Person(const std::string& name, bool female, const Address& address)
 		: m_name(name)

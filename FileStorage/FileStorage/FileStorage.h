@@ -40,11 +40,14 @@ public:
 	FileStorage(std::ostream& os)
 		: m_os(os)
 		, m_writing(true)
-	{}
+	{
+		objectBegin(*this);
+	}
 
 	FileStorage(std::istream& is)
 		: m_root(is)
-		, m_writing(true)
+		, m_os(m_ofs)
+		, m_writing(false)
 	{}
 
 	~FileStorage() {
