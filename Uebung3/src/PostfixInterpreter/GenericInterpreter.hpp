@@ -68,14 +68,14 @@ namespace GenericInterpreter {
     class PostfixInterpreter {
         // TODO: Aufgabe 2b) Definieren Sie hier die notwendige Datenstruktur
 
+        std::stack<std::string> stk;
+
         // TODO: Aufgabe 3a) Definieren Sie hier die Hilfsmethode apply()
 
-        template<typename T>
-        struct apply {
-            constexpr T operator()(const T& a, const T& b) const {
-                // ?
-            }
-        };
+        /*template<Computable Func>
+        auto apply(Func f) {
+            f()
+        };*/
 
     public:
         /// <summary>
@@ -88,7 +88,6 @@ namespace GenericInterpreter {
             // TODO: Aufgabe 2b) Berechnen Sie den Wert des Ausdrucks
 
             int len = tokens.size();
-            std::stack<std::string> stk;
 
             for (int i = 0; i < len; ++i) {
 
@@ -96,9 +95,9 @@ namespace GenericInterpreter {
                     stk.push(tokens[i]);
                 }
                 else {
-                    auto rhs = convertString<T>(stk.top());
+                    const auto rhs = convertString<T>(stk.top());
                     stk.pop();
-                    auto lhs = convertString<T>(stk.top());
+                    const auto lhs = convertString<T>(stk.top());
                     stk.pop();
 
                     if (tokens[i] == "+") {
