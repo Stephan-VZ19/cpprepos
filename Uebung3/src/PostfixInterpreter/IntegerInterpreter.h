@@ -23,30 +23,29 @@ namespace IntegerInterpreter {
             // TODO: Aufgabe 1) Berechnen Sie den Wert des Ausdrucks
 
             size_t len = tokens.size();  
-            std::stack<std::string> stk;
+            std::stack<int> stk;
 
             for (int i = 0; i < len; ++i) {
-
                 if (tokens[i] != "+" && tokens[i] != "-" && tokens[i] != "*" && tokens[i] != "/") {
-                    stk.push(tokens[i]);
+                    stk.push(std::stoi(tokens[i]));
                 }
                 else {
-                    int rhs = std::stoi(stk.top());
+                    const int rhs = (stk.top());
                     stk.pop();
-                    int lhs = std::stoi(stk.top());
+                    const int lhs = (stk.top());
                     stk.pop();
 
                     if (tokens[i] == "+") {
-                        stk.push(std::to_string(lhs + rhs));
+                        stk.push(lhs + rhs);
                     }
                     else if (tokens[i] == "-") {
-                        stk.push(std::to_string(lhs - rhs));
+                        stk.push(lhs - rhs);
                     }
                     else if (tokens[i] == "*") {
-                        stk.push(std::to_string(lhs * rhs));
+                        stk.push(lhs * rhs);
                     }
                     else if (tokens[i] == "/") {
-                        stk.push(std::to_string(lhs / rhs));
+                        stk.push(lhs / rhs);
                     }
                     else {
                         throw std::exception("Wrong operator token");
@@ -54,7 +53,7 @@ namespace IntegerInterpreter {
                 }
             }
             if (stk.size() > 1) throw std::exception("Format error");
-            return std::stoi(stk.top());
+            return (stk.top());
         }
     };
 }
