@@ -62,6 +62,14 @@ namespace GenericInterpreter {
     template<typename T>
     concept Computable = (Addable<T> && Subtractable<T> && Multiplyable<T> && Divideable<T>);
 
+    template<typename Func>
+    concept ResultIsBinOp = requires(Func a) {
+        { a() } -> Computable;
+    };
+
+    template<typename T, typename Func>
+    concept BinaryOperation = (Computable<T> && ResultIsBinOp<Func>);
+
     // TODO: Aufgabe 3c) Deklariere Sie hier den Funktor increment
 
     template <Computable T>
