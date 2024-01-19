@@ -78,7 +78,7 @@ namespace GenericInterpreter {
             stk.pop();
             const auto lhs = convertString<T>(stk.top());
             stk.pop();
-            stk.push(std::to_string(Func(lhs, rhs)));
+            stk.push(std::to_string(Func<T>(lhs, rhs)));
         };
 
     public:
@@ -91,7 +91,7 @@ namespace GenericInterpreter {
         T evaluate(const std::vector<std::string>& tokens) {
             // TODO: Aufgabe 2b) Berechnen Sie den Wert des Ausdrucks
 
-            int len = tokens.size();
+            size_t len = tokens.size();
 
             for (int i = 0; i < len; ++i) {
 
