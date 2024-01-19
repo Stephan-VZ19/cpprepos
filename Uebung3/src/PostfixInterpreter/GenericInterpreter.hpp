@@ -72,13 +72,13 @@ namespace GenericInterpreter {
 
         // TODO: Aufgabe 3a) Definieren Sie hier die Hilfsmethode apply()
 
-        template<Computable T, typename Func>
-        void apply(Func f) {
+        template<Computable f>
+        void apply(f func) {
             const auto rhs = convertString<T>(stk.top());
             stk.pop();
             const auto lhs = convertString<T>(stk.top());
             stk.pop();
-            stk.push(std::to_string(Func<T>(lhs, rhs)));
+            stk.push(std::to_string(func<T>(lhs, rhs)));
         };
 
     public:
@@ -98,16 +98,16 @@ namespace GenericInterpreter {
                 if (tokens[i] != "*" && tokens[i] != "/" && tokens[i] != "+" && tokens[i] != "-") {
                     stk.push(tokens[i]);
                 }
+                else if (tokens[i] == "+") {
+                    apply(std::plus<T>());
+                }
                 else {
                     const auto rhs = convertString<T>(stk.top());
                     stk.pop();
                     const auto lhs = convertString<T>(stk.top());
                     stk.pop();
 
-                    if (tokens[i] == "+") {
-                        stk.push(std::to_string(lhs + rhs));
-                    }
-                    else if (tokens[i] == "-") {
+                    if (tokens[i] == "-") {
                         stk.push(std::to_string(lhs - rhs));
                     }
                     else if (tokens[i] == "*") {
