@@ -72,10 +72,14 @@ namespace GenericInterpreter {
 
         // TODO: Aufgabe 3a) Definieren Sie hier die Hilfsmethode apply()
 
-        /*template<Computable Func>
-        auto apply(Func f) {
-            f()
-        };*/
+        template<Computable T, typename Func>
+        void apply(Func f) {
+            const auto rhs = convertString<T>(stk.top());
+            stk.pop();
+            const auto lhs = convertString<T>(stk.top());
+            stk.pop();
+            stk.push(std::to_string(Func(lhs, rhs)));
+        };
 
     public:
         /// <summary>
