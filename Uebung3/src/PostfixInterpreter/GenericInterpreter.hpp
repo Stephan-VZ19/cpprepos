@@ -72,6 +72,13 @@ namespace GenericInterpreter {
 
     // TODO: Aufgabe 3c) Deklariere Sie hier den Funktor increment
 
+    template<typename T>
+    struct increment {
+        constexpr T operator()(const T& a) {
+            return ++a;
+        }
+    };
+
     template <Computable T>
     class PostfixInterpreter {
         // TODO: Aufgabe 2b) Definieren Sie hier die notwendige Datenstruktur
